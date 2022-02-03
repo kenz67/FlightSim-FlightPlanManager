@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FlightPlanManager.Services;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -9,17 +10,12 @@ namespace FlightPlanManager.DataObjects
 {
     public class DbPlanObject : INotifyPropertyChanged
     {
-        private string _name;
         private int _rating;
+        private string _group;
+        private string _notes;
 
         public int Id { get; set; }
-
-        public string Name
-        {
-            get { return _name; }
-            set { _name = value; OnPropertyChanged(this, nameof(Name)); }
-        }
-
+        public string Name { get; set; }
         public string Type { get; set; }
         public string Departure { get; set; }
         public string Destination { get; set; }
@@ -31,24 +27,32 @@ namespace FlightPlanManager.DataObjects
         }
 
         public double Distance { get; set; }
-        public string Group { get; set; }
-        public string Notes { get; set; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged(object sender, string propertyName)
+        public string Group
         {
-            //todo update row in db
-            //things change even when setting, do something with contsructor
-            if (PropertyChanged != null)
-            {
-                // PropertyChanged(sender, new PropertyChangedEventArgs(propertyName));
-            }
+            get { return _group; }
+            set { _group = value; OnPropertyChanged(this, nameof(Group)); }
+        }
+
+        public string Notes
+        {
+            get { return _notes; }
+            set { _notes = value; OnPropertyChanged(this, nameof(Notes)); }
         }
 
         public string Plan { get; set; }
         public string OrigFileName { get; set; }
         public string OrigFullFileName { get; set; }
         public DateTime ImportDate { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged(object sender, string _)
+        {
+            if (PropertyChanged != null)
+            {
+                DbData.Update(sender as DbPlanObject);
+            }
+        }
     }
 }

@@ -12,12 +12,57 @@ namespace FlightPlanManager.Services
     {
         public static SortableBindingList<DbPlanObject> GetData()
         {
-            return new SortableBindingList<DbPlanObject>
+            var result = new SortableBindingList<DbPlanObject>();
             {
-                new DbPlanObject { Id = 0, Name = "one", ImportDate = DateTime.Now, Type = "VFR", Departure = "KJFK", Destination = "KORD", Rating = 1, Group = "group 1", Notes = "hi", Distance = 50 },
-                new DbPlanObject { Id = 1, Name = "two", ImportDate = DateTime.Now, Type = "IFR", Rating = 3, Group = "solo", Notes = "bye", Distance = 200 },
-                new DbPlanObject { Id = 2, Name = "three", ImportDate = DateTime.Now, Type = "VFR", Rating = 2, Group = "solo", Notes = "hello", Distance = 150 }
-            };
+                using (var connection = new SQLiteConnection($"Data Source={DbCommon.DbName}"))
+                {
+                    connection.Open();
+
+                    using (SQLiteCommand cmd = connection.CreateCommand())
+                    {
+                        cmd.CommandText = @"SELECT
+                               [id]
+                              ,[planName]
+                              ,[type]
+                              ,[departureId]
+                              ,[destinationId]
+                              ,[distance]
+                              ,[rating]
+                              ,[groupFlownWith]
+                              ,[notes]
+                              ,[plan]
+                              ,[filename]
+                              ,[fullFileName]
+                              ,[importDate]
+                        FROM [planData]
+                        ORDER BY importDate DESC";
+
+                        using (var rdr = cmd.ExecuteReader())
+                        {
+                            while (rdr.Read())
+                            {
+                                result.Add(new DbPlanObject
+                                {
+                                    Id = rdr.GetInt32(0),
+                                    Name = rdr.GetString(1),
+                                    Type = rdr.GetString(2),
+                                    Departure = rdr.GetString(3),
+                                    Destination = rdr.GetString(4),
+                                    Distance = (double)rdr.GetDecimal(5),
+                                    Rating = rdr.GetInt32(6),
+                                    Group = rdr.GetString(7),
+                                    Notes = rdr.GetString(8),
+                                    Plan = rdr.GetString(9),
+                                    OrigFileName = rdr.GetString(10),
+                                    OrigFullFileName = rdr.GetString(11),
+                                    ImportDate = rdr.GetDateTime(12)
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            return result;
         }
 
         public static int AddPlan(DbPlanObject plan)
@@ -42,7 +87,7 @@ namespace FlightPlanManager.Services
                     cmd.Parameters.AddWithValue("@fulFileName", plan.OrigFullFileName);
                     cmd.Parameters.AddWithValue("@importDate", plan.ImportDate);
 
-                    cmd.CommandText = "SELECT Name FROM planData WHERE planName = @name";
+                    cmd.CommandText = "SELECT planName FROM planData WHERE planName = @name";
                     using (var rdr = cmd.ExecuteReader())
                     {
                         if (rdr.HasRows)
@@ -71,7 +116,7 @@ namespace FlightPlanManager.Services
                                         @destinationId,
                                         @distance,
                                         @rating,
-                                        @groupFlownWith
+                                        @groupFlownWith,
                                         @notes,
                                         @plan,
                                         @filename,
@@ -79,13 +124,49 @@ namespace FlightPlanManager.Services
                                         @importDate)";
                     cmd.ExecuteNonQuery();
                     cmd.CommandText = "SELECT last_insert_rowid()";
-                    id = (int)cmd.ExecuteScalar();
+                    object tmp = cmd.ExecuteScalar();
+                    id = int.Parse(tmp.ToString());
                 }
 
                 connection.Close();
             }
 
             return id;
+        }
+
+        public static void Update(DbPlanObject data)
+        {
+            using (var connection = new SQLiteConnection($"Data Source={DbCommon.DbName}"))
+            {
+                connection.Open();
+
+                using (SQLiteCommand cmd = connection.CreateCommand())
+                {
+                    cmd.Parameters.AddWithValue("@id", data.Id);
+                    cmd.Parameters.AddWithValue("@rating", data.Rating);
+                    cmd.Parameters.AddWithValue("@group", data.Group);
+                    cmd.Parameters.AddWithValue("@notes", data.Notes);
+
+                    cmd.CommandText = "UPDATE planData SET rating = @rating, groupFlownWith = @group, notes = @notes WHERE id = @id";
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public static void Delete(int id)
+        {
+            using (var connection = new SQLiteConnection($"Data Source={DbCommon.DbName}"))
+            {
+                connection.Open();
+
+                using (SQLiteCommand cmd = connection.CreateCommand())
+                {
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    cmd.CommandText = "DELETE FROM planData  WHERE id = @id";
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
     }
 }

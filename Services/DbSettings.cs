@@ -17,14 +17,7 @@ namespace FlightPlanManager.Services
                 {
                     cmd.Parameters.AddWithValue("@key", setting);
                     cmd.CommandText = "SELECT DataValue FROM settings WHERE DataKey = @key";
-
-                    using (var rdr = cmd.ExecuteReader())
-                    {
-                        while (rdr.Read())
-                        {
-                            val = rdr.GetString(0);
-                        }
-                    }
+                    val = cmd.ExecuteScalar().ToString();
                 }
 
                 connection.Close();

@@ -82,22 +82,6 @@ namespace FlightPlanManager
             dataGridView1.MinimumSize = new Size(this.Width - 22, this.Height - 22);
         }
 
-        private void DataGridView1_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
-        {
-            //TODO - delete row in db
-            DataGridViewRow startingBalanceRow = dataGridView1.Rows[0];
-
-            // Check if the Starting Balance row is included in the selected rows
-            if (dataGridView1.SelectedRows.Contains(startingBalanceRow))
-            {
-                // Do not allow the user to delete the Starting Balance row.
-                MessageBox.Show("Cannot delete Starting Balance row!");
-
-                // Cancel the deletion if the Starting Balance row is included.
-                e.Cancel = true;
-            }
-        }
-
         private void DataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
             var data = (sender as DataGridView)?.DataSource as SortableBindingList<DbPlanObject>;
@@ -141,11 +125,17 @@ namespace FlightPlanManager
             }
         }
 
+        private void DataGridView1_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
+        {
+            DataGridView1_Delete(sender, e);
+        }
+
         private void DataGridView1_Delete(object sender, EventArgs e)
         {
             Int32 rowToDelete = dataGridView1.Rows.GetFirstRow(DataGridViewElementStates.Selected);
-            if (MessageBox.Show($"Are you sure you want to delete \"{dataGridView1.Rows[rowToDelete].Cells["nameDataGridViewColumn"].Value}\" plan?", "Deleting", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.OK)
+            if (MessageBox.Show($"Are you sure you want to delete \"{dataGridView1.Rows[rowToDelete].Cells["nameDataGridViewColumn"].Value}\" plan?", "Deleting", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
+                DbData.Delete((int)dataGridView1.Rows[rowToDelete].Cells["id"].Value);
                 dataGridView1.Rows.RemoveAt(rowToDelete);
                 dataGridView1.ClearSelection();
             }
@@ -194,13 +184,24 @@ namespace FlightPlanManager
                         OrigFileName = new FileInfo(planFile).Name,
                         OrigFullFileName = planFile,
                         Rating = 0,
+                        ImportDate = DateTime.Now,
+                        Plan = doc.InnerXml,
                         Type = data.FlightPlan_FlightPlan.FPType ?? "VFR"
                     };
 
-                    d.Add(plan); //TODO add to db, get id, check for existing?
-                    dataGridView1.ClearSelection();
-                    dataGridView1.Rows[dataGridView1.Rows.Count - 1].Selected = true;
-                    dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.SelectedRows[0].Index;
+                    plan.Id = DbData.AddPlan(plan);
+
+                    if (!plan.Id.Equals(-1))
+                    {
+                        d.Add(plan);
+                        dataGridView1.ClearSelection();
+                        dataGridView1.Rows[dataGridView1.Rows.Count - 1].Selected = true;
+                        dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.SelectedRows[0].Index;
+                    }
+                    else
+                    {
+                        MessageBox.Show($"A plan with the name \"{plan.Name}\" already exists", "Import Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
         }

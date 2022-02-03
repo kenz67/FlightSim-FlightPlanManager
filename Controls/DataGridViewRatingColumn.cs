@@ -208,7 +208,7 @@ namespace FlightPlanManager.Controls
 
         private bool IsReadOnly()
         {
-            return OwningColumn is DataGridViewRatingColumn col ? col.ReadOnly : false;
+            return OwningColumn is DataGridViewRatingColumn col && col.ReadOnly;
         }
 
         private void PaintStars(Graphics g, Rectangle bounds, int startIndex, int count, bool rated)
