@@ -182,6 +182,8 @@ namespace FlightPlanManager
 
                     foreach (var planFile in openFileDialog.FileNames)
                     {
+                        var waypoints = 0;
+                        var airports = 0;
                         try
                         {
                             SimBase_Document data;
@@ -197,9 +199,17 @@ namespace FlightPlanManager
                             double distance = 0;
 
                             var lastPoint = GeoCoordinates.GetGeoCoodinate(data.FlightPlan_FlightPlan.DepartureLLA);
-                            foreach (var weighpoint in data.FlightPlan_FlightPlan.ATCWaypoint)
+                            foreach (var waypoint in data.FlightPlan_FlightPlan.ATCWaypoint)
                             {
-                                var newPoint = GeoCoordinates.GetGeoCoodinate(weighpoint.WorldPosition);
+                                if (waypoint.ATCWaypointType.Equals("Airport"))
+                                {
+                                    airports++;
+                                }
+                                else
+                                {
+                                    waypoints++;
+                                }
+                                var newPoint = GeoCoordinates.GetGeoCoodinate(waypoint.WorldPosition);
                                 distance += lastPoint.GetDistanceTo(newPoint);
                                 lastPoint = newPoint;
                             }
@@ -213,13 +223,13 @@ namespace FlightPlanManager
                                 Destination = data.FlightPlan_FlightPlan.DestinationID,
                                 Distance = Math.Round(distance * 0.000539957, 1),
                                 Group = string.Empty,
-                                Notes = string.Empty,
+                                Notes = $"{waypoints} waypt, {airports} arpt",
                                 OrigFileName = new FileInfo(planFile).Name,
                                 OrigFullFileName = planFile,
                                 Rating = 0,
                                 ImportDate = DateTime.Now,
                                 Plan = doc.InnerXml,
-                                Type = data.FlightPlan_FlightPlan.FPType ?? "VFR"
+                                Type = data.FlightPlan_FlightPlan.FPType ?? "VFR",
                             };
 
                             plan.Id = DbData.AddPlan(plan);
