@@ -16,7 +16,7 @@ Flight Plan Manager
 
 ## Documentation
 
-[Help Page](https://htmlpreview.github.io/?https://raw.githubusercontent.com/kenz67/FlightSim-FlightPlanManager/master/FlightPlanManager/docs/Help.html)
+[Help Page](https://htmlpreview.github.io/?https://raw.githubusercontent.com/kenz67/FlightSim-FlightPlanManager/master/docs/Help.html)
 
 [Discussion](https://github.com/kenz67/FlightSim-FlightPlanManager/discussions)
 
