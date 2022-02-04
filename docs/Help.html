@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <style>
+        .ul.cols2 {
+            columns: 2;
+            -webkit-columns: 2;
+            -moz-columns: 2;
+        }
+
+        ul.no-bullets {
+            list-style-type: none; /* Remove bullets */
+            padding: 0; /* Remove padding */
+            margin: 0; /* Remove margins */
+        }
+    </style>
+
+    <meta charset="utf-8" />
+    <title>Aircraft State</title>
+</head>
+<body>
+    <h1>Introduction</h1>
+    This application was created tohelp manage flight plans.  You can import flight plans, rate them, add some comments, etc.
+    <br /><br />
+    The following data will be imported and saved.  Fields in bold are editable.
+    <br />
+    <ul class="cols2">
+        <li>Plan Name - Title from the XML</li>
+        <li>Plan Type (IFR or VFR)</li>
+        <li>Import Date</li>
+        <li>Departure Id</li>
+        <li>Destination ID</li>
+        <li><b>Rating</b> - User assigned rating for this plan</li>
+        <li>Distance - Total distance calculated for the plan</li>
+        <li><b>Group the plan was flown with</b></li>
+        <li>Original file name - This is the file that was imported</li>
+        <li><b>Notes</b> - Initially set to a count of the number of waypoints and airports, can be used for anything</li>
+    </ul>
+
+    <h1>Import Plan</h1>
+
+    Plans need to be imported into the application.   Either select Import from the file menu or right click on the screen and select import.  From the import screen, select one or more plan files to be imported.
+    All plans will be imported with default fields saved.
+
+    <h1>Edit Plan</h1>
+
+    The editable fields can be updated directly in the table.  Any edits are immediatly saved.  Note that these updates are in an internal database and does not in any way affect the original plan file.
+
+    <h1>Sorting</h1>
+
+    The table is sortable by clicking any column headers.  A second click will reverse the order of the sort.
+
+    <h1>Export Plan</h1>
+
+    The original plan is saved in the application.  Right clicking on the table will bring up a menu with an <i>Export</i> option.  This allows you to export the plan back to the drive for use later.  It can be useful if the original plan was deleted.
+
+    <h1>Delete Plan</h1>
+
+    Right clicking on the table will bring up a menu with a <i>Delete</i> option.  Delete will remove the plan from the application.  It will not affect the plan saved on your harddrive.
+</body>
+</html>

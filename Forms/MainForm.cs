@@ -254,5 +254,11 @@ namespace FlightPlanManager
                 }
             }
         }
+
+        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var helpDialog = new FlightPlanManager.Forms.Help();
+            helpDialog.ShowDialog();
+        }
     }
 }
