@@ -57,7 +57,7 @@ namespace FlightPlanManager
 
         private void RestoreWindowPosition()
         {
-            var position = DbSettings.GetSetting("WindowPosition");
+            var position = DbSettings.GetSetting(DbCommon.SettingsWindowPosition);
             List<int> settings = position.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
                                   .Select(v => int.Parse(v)).ToList();
 
@@ -71,7 +71,7 @@ namespace FlightPlanManager
         private void AppClosing(object sender, EventArgs e)
         {
             Rectangle rect = (WindowState == FormWindowState.Normal) ? DesktopBounds : RestoreBounds;
-            DbSettings.SaveSetting("WindowPosition", String.Format("{0},{1},{2},{3},{4}",
+            DbSettings.SaveSetting(DbCommon.SettingsWindowPosition, String.Format("{0},{1},{2},{3},{4}",
                 (int)this.WindowState,
                 rect.Left, rect.Top, rect.Width, rect.Height));
         }
@@ -146,13 +146,15 @@ namespace FlightPlanManager
             Int32 rowToExport = dataGridView1.Rows.GetFirstRow(DataGridViewElementStates.Selected);
             using (SaveFileDialog saveFileDialog = new SaveFileDialog())
             {
+                var folder = DbSettings.GetSetting(DbCommon.SettingsDefaultFolder);
                 var rowData = DbData.GetData((int)dataGridView1.Rows[rowToExport].Cells["id"].Value);
                 saveFileDialog.Filter = "Plan files (*.pln)|*.pln";
                 saveFileDialog.FileName = rowData.OrigFileName;
-                saveFileDialog.InitialDirectory = $"C:\\Users\\{Environment.UserName}\\AppData\\Local\\Packages\\Microsoft.FlightSimulator_8wekyb3d8bbwe\\LocalState";   //TODO -- settings
+                saveFileDialog.InitialDirectory = folder;
                 saveFileDialog.RestoreDirectory = true;
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
+                    DbSettings.SaveSetting(DbCommon.SettingsDefaultFolder, new FileInfo(saveFileDialog.FileName).DirectoryName);
                     using (StreamWriter stream = new StreamWriter(saveFileDialog.FileName))
                     {
                         var planXml = new XmlDocument();
@@ -168,13 +170,16 @@ namespace FlightPlanManager
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
+                var folder = DbSettings.GetSetting(DbCommon.SettingsDefaultFolder);
                 openFileDialog.Filter = "Select one or more Plan files (*.pln)|*.pln";
                 openFileDialog.Multiselect = true;
-                openFileDialog.InitialDirectory = $"C:\\Users\\{Environment.UserName}\\AppData\\Local\\Packages\\Microsoft.FlightSimulator_8wekyb3d8bbwe\\LocalState";   //TODO -- settings
+                openFileDialog.InitialDirectory = folder;
                 openFileDialog.RestoreDirectory = true;
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
+                    DbSettings.SaveSetting(DbCommon.SettingsDefaultFolder, new FileInfo(openFileDialog.FileName).DirectoryName);
+
                     foreach (var planFile in openFileDialog.FileNames)
                     {
                         try

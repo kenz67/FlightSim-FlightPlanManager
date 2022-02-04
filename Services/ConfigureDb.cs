@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FlightPlanManager.Services;
+using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
@@ -24,7 +25,7 @@ namespace FlightPlanManager.DataObjects
                 CreateSettingTable(connection);
                 CreateDataTable(connection);
 
-                LoadSettingTable(connection);
+                LoadSettingTable();
             }
         }
 
@@ -42,8 +43,9 @@ namespace FlightPlanManager.DataObjects
             }
         }
 
-        private void LoadSettingTable(SQLiteConnection conn)
+        private void LoadSettingTable()
         {
+            DbSettings.SaveSetting(DbCommon.SettingsDefaultFolder, $"C:\\Users\\{Environment.UserName}\\AppData\\Local\\Packages\\Microsoft.FlightSimulator_8wekyb3d8bbwe\\LocalState");
         }
 
         public void CreateDataTable(SQLiteConnection conn)

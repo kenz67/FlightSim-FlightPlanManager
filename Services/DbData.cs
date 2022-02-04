@@ -20,7 +20,7 @@ namespace FlightPlanManager.Services
 
                 using (SQLiteCommand cmd = connection.CreateCommand())
                 {
-                    cmd.Parameters.AddWithValue("id", id);
+                    cmd.Parameters.AddWithValue("@id", id);
                     cmd.CommandText = @"SELECT
                                [id]
                               ,[planName]
