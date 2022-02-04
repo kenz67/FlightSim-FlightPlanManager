@@ -10,6 +10,61 @@ namespace FlightPlanManager.Services
 {
     public static class DbData
     {
+        public static DbPlanObject GetData(int id)
+        {
+            var result = new DbPlanObject();
+
+            using (var connection = new SQLiteConnection($"Data Source={DbCommon.DbName}"))
+            {
+                connection.Open();
+
+                using (SQLiteCommand cmd = connection.CreateCommand())
+                {
+                    cmd.Parameters.AddWithValue("id", id);
+                    cmd.CommandText = @"SELECT
+                               [id]
+                              ,[planName]
+                              ,[type]
+                              ,[departureId]
+                              ,[destinationId]
+                              ,[distance]
+                              ,[rating]
+                              ,[groupFlownWith]
+                              ,[notes]
+                              ,[plan]
+                              ,[filename]
+                              ,[fullFileName]
+                              ,[importDate]
+                        FROM [planData]
+                        WHERE id = @id";
+
+                    using (var rdr = cmd.ExecuteReader())
+                    {
+                        while (rdr.Read())
+                        {
+                            result = new DbPlanObject
+                            {
+                                Id = rdr.GetInt32(0),
+                                Name = rdr.GetString(1),
+                                Type = rdr.GetString(2),
+                                Departure = rdr.GetString(3),
+                                Destination = rdr.GetString(4),
+                                Distance = (double)rdr.GetDecimal(5),
+                                Rating = rdr.GetInt32(6),
+                                Group = rdr.GetString(7),
+                                Notes = rdr.GetString(8),
+                                Plan = rdr.GetString(9),
+                                OrigFileName = rdr.GetString(10),
+                                OrigFullFileName = rdr.GetString(11),
+                                ImportDate = rdr.GetDateTime(12)
+                            };
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+
         public static SortableBindingList<DbPlanObject> GetData()
         {
             var result = new SortableBindingList<DbPlanObject>();

@@ -141,66 +141,100 @@ namespace FlightPlanManager
             }
         }
 
+        private void ExportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Int32 rowToExport = dataGridView1.Rows.GetFirstRow(DataGridViewElementStates.Selected);
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            {
+                var rowData = DbData.GetData((int)dataGridView1.Rows[rowToExport].Cells["id"].Value);
+                saveFileDialog.Filter = "Plan files (*.pln)|*.pln";
+                saveFileDialog.FileName = rowData.OrigFileName;
+                saveFileDialog.InitialDirectory = $"C:\\Users\\{Environment.UserName}\\AppData\\Local\\Packages\\Microsoft.FlightSimulator_8wekyb3d8bbwe\\LocalState";   //TODO -- settings
+                saveFileDialog.RestoreDirectory = true;
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    using (StreamWriter stream = new StreamWriter(saveFileDialog.FileName))
+                    {
+                        var planXml = new XmlDocument();
+                        planXml.LoadXml(rowData.Plan);
+                        planXml.Save(stream);
+                        //stream.Write(plan.Plan);
+                    }
+                }
+            }
+        }
+
         private void ImportToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
-                openFileDialog.Filter = "Plan files (*.pln)|*.pln";
+                openFileDialog.Filter = "Select one or more Plan files (*.pln)|*.pln";
+                openFileDialog.Multiselect = true;
                 openFileDialog.InitialDirectory = $"C:\\Users\\{Environment.UserName}\\AppData\\Local\\Packages\\Microsoft.FlightSimulator_8wekyb3d8bbwe\\LocalState";   //TODO -- settings
                 openFileDialog.RestoreDirectory = true;
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    SimBase_Document data;
-                    XmlSerializer serializer = new XmlSerializer(typeof(SimBase_Document));
-                    XmlDocument doc = new XmlDocument();
-                    string planFile = openFileDialog.FileName;
-
-                    doc.Load(planFile);
-                    using (var sr = new StringReader(doc.InnerXml))
+                    foreach (var planFile in openFileDialog.FileNames)
                     {
-                        data = (SimBase_Document)serializer.Deserialize(sr);
-                    }
+                        try
+                        {
+                            SimBase_Document data;
+                            XmlSerializer serializer = new XmlSerializer(typeof(SimBase_Document));
+                            XmlDocument doc = new XmlDocument();
 
-                    var lastPoint = GeoCoordinates.GetGeoCoodinate(data.FlightPlan_FlightPlan.DepartureLLA);
-                    double distance = 0;
-                    foreach (var weighpoint in data.FlightPlan_FlightPlan.ATCWaypoint)
-                    {
-                        var newPoint = GeoCoordinates.GetGeoCoodinate(weighpoint.WorldPosition);
-                        distance += lastPoint.GetDistanceTo(newPoint);
-                        lastPoint = newPoint;
-                    }
+                            doc.Load(planFile);
+                            using (var sr = new StringReader(doc.InnerXml))
+                            {
+                                data = (SimBase_Document)serializer.Deserialize(sr);
+                            }
 
-                    distance += lastPoint.GetDistanceTo(GeoCoordinates.GetGeoCoodinate(data.FlightPlan_FlightPlan.DestinationLLA));
+                            double distance = 0;
 
-                    var plan = new DbPlanObject
-                    {
-                        Name = data.FlightPlan_FlightPlan.Title,
-                        Departure = data.FlightPlan_FlightPlan.DepartureID,
-                        Destination = data.FlightPlan_FlightPlan.DestinationID,
-                        Distance = Math.Round(distance * 0.000539957, 1),
-                        Group = string.Empty,
-                        Notes = string.Empty,
-                        OrigFileName = new FileInfo(planFile).Name,
-                        OrigFullFileName = planFile,
-                        Rating = 0,
-                        ImportDate = DateTime.Now,
-                        Plan = doc.InnerXml,
-                        Type = data.FlightPlan_FlightPlan.FPType ?? "VFR"
-                    };
+                            var lastPoint = GeoCoordinates.GetGeoCoodinate(data.FlightPlan_FlightPlan.DepartureLLA);
+                            foreach (var weighpoint in data.FlightPlan_FlightPlan.ATCWaypoint)
+                            {
+                                var newPoint = GeoCoordinates.GetGeoCoodinate(weighpoint.WorldPosition);
+                                distance += lastPoint.GetDistanceTo(newPoint);
+                                lastPoint = newPoint;
+                            }
 
-                    plan.Id = DbData.AddPlan(plan);
+                            distance += lastPoint.GetDistanceTo(GeoCoordinates.GetGeoCoodinate(data.FlightPlan_FlightPlan.DestinationLLA));
 
-                    if (!plan.Id.Equals(-1))
-                    {
-                        d.Add(plan);
-                        dataGridView1.ClearSelection();
-                        dataGridView1.Rows[dataGridView1.Rows.Count - 1].Selected = true;
-                        dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.SelectedRows[0].Index;
-                    }
-                    else
-                    {
-                        MessageBox.Show($"A plan with the name \"{plan.Name}\" already exists", "Import Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            var plan = new DbPlanObject
+                            {
+                                Name = data.FlightPlan_FlightPlan.Title,
+                                Departure = data.FlightPlan_FlightPlan.DepartureID,
+                                Destination = data.FlightPlan_FlightPlan.DestinationID,
+                                Distance = Math.Round(distance * 0.000539957, 1),
+                                Group = string.Empty,
+                                Notes = string.Empty,
+                                OrigFileName = new FileInfo(planFile).Name,
+                                OrigFullFileName = planFile,
+                                Rating = 0,
+                                ImportDate = DateTime.Now,
+                                Plan = doc.InnerXml,
+                                Type = data.FlightPlan_FlightPlan.FPType ?? "VFR"
+                            };
+
+                            plan.Id = DbData.AddPlan(plan);
+
+                            if (!plan.Id.Equals(-1))
+                            {
+                                d.Add(plan);
+                                dataGridView1.ClearSelection();
+                                dataGridView1.Rows[dataGridView1.Rows.Count - 1].Selected = true;
+                                dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.SelectedRows[0].Index;
+                            }
+                            else
+                            {
+                                MessageBox.Show($"A plan with the name \"{plan.Name}\" already exists", "Import Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+                        }
+                        catch
+                        {
+                            MessageBox.Show($"Error reading {planFile}, invalid format", "Import Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
                     }
                 }
             }
