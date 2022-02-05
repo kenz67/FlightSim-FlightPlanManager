@@ -33,8 +33,6 @@ namespace FlightPlanManager
         {
             this.Text = $"Flight Plan Manager - {Application.ProductVersion}";
 
-            List<DbPlanObject> planObjects = new List<DbPlanObject>();
-
             d = DbData.GetData();
 
             dataGridView1.DataSource = d;
@@ -88,18 +86,14 @@ namespace FlightPlanManager
             int column = dataGridView1.CurrentCell.ColumnIndex;
             string headerText = dataGridView1.Columns[column].HeaderText;
 
-            //string titleText = dataGridView1.Columns[7].HeaderText;
             if (headerText.Equals("Group"))
             {
                 TextBox autoText = e.Control as TextBox;
-                //if (e.Control is TextBox autoText)
-                {
-                    autoText.AutoCompleteMode = AutoCompleteMode.Suggest;
-                    autoText.AutoCompleteSource = AutoCompleteSource.CustomSource;
-                    AutoCompleteStringCollection DataCollection = new AutoCompleteStringCollection();
-                    AddItemsToAutoCompleteList(DataCollection, data);
-                    autoText.AutoCompleteCustomSource = DataCollection;
-                }
+                autoText.AutoCompleteMode = AutoCompleteMode.Suggest;
+                autoText.AutoCompleteSource = AutoCompleteSource.CustomSource;
+                AutoCompleteStringCollection DataCollection = new AutoCompleteStringCollection();
+                AddItemsToAutoCompleteList(DataCollection, data);
+                autoText.AutoCompleteCustomSource = DataCollection;
             }
         }
 
@@ -123,6 +117,15 @@ namespace FlightPlanManager
                     dataGridView1.Rows[hti.RowIndex].Selected = true;
                 }
             }
+        }
+
+        private void ShowMapToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var selectedRow = dataGridView1.Rows.GetFirstRow(DataGridViewElementStates.Selected);
+            var id = (int)dataGridView1.Rows[selectedRow].Cells["id"].Value;
+            var m = new Map();
+            m.ConfigureMap(id);
+            m.ShowDialog();
         }
 
         private void DataGridView1_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
@@ -160,7 +163,6 @@ namespace FlightPlanManager
                         var planXml = new XmlDocument();
                         planXml.LoadXml(rowData.Plan);
                         planXml.Save(stream);
-                        //stream.Write(plan.Plan);
                     }
                 }
             }
@@ -255,7 +257,7 @@ namespace FlightPlanManager
             }
         }
 
-        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
+        private void HelpToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var helpDialog = new FlightPlanManager.Forms.Help();
             helpDialog.ShowDialog();

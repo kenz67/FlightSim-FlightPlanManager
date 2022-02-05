@@ -7,11 +7,12 @@ Flight Plan Manager
 ## Features
 
 - Import and save flight plans
+- View map of plan
 - Rate flight plans
 - Get type of flight plan (VFR/IFR)
 - Capture Departure, Destination and Total Distance
 - Add comments to flight plans, such as who flown with or personal notes
-- Sort and filter (coming soon) data on the screen
+- Sort and (filter coming soon) data on the screen
 
 
 ## Documentation
@@ -26,6 +27,7 @@ Flight Plan Manager
 ## Screenshots
 
 ![Main Page](https://raw.githubusercontent.com/kenz67/FlightSim-FlightPlanManager/master/docs/ScreenShot.png)
+![Map Page](https://raw.githubusercontent.com/kenz67/FlightSim-FlightPlanManager/master/docs/Map.png)
 
 
 ## Installation

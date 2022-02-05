@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FlightPlanManager.DataObjects
 {
@@ -11,5 +7,6 @@ namespace FlightPlanManager.DataObjects
         public static readonly string DbName = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\FlightPlanManager\\FlightPlanManager.sqlite";
         public static readonly string SettingsDefaultFolder = "DefaultFolder";
         public static readonly string SettingsWindowPosition = "WindowPosition";
+        public static readonly string SettingsMapWindowPosition = "MapWindowPosition";
     }
 }

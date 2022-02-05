@@ -1,5 +1,4 @@
 ﻿using FlightPlanManager.DataObjects;
-using FlightPlanManager.Properties;
 using System.Data.SQLite;
 
 namespace FlightPlanManager.Services
@@ -12,14 +11,19 @@ namespace FlightPlanManager.Services
             using (var connection = new SQLiteConnection($"Data Source={DbCommon.DbName}"))
             {
                 connection.Open();
-
                 using (SQLiteCommand cmd = connection.CreateCommand())
                 {
-                    cmd.Parameters.AddWithValue("@key", setting);
-                    cmd.CommandText = "SELECT DataValue FROM settings WHERE DataKey = @key";
-                    val = cmd.ExecuteScalar().ToString();
+                    try
+                    {
+                        cmd.Parameters.AddWithValue("@key", setting);
+                        cmd.CommandText = "SELECT DataValue FROM settings WHERE DataKey = @key";
+                        val = cmd.ExecuteScalar().ToString();
+                    }
+                    catch
+                    {
+                        val = string.Empty;
+                    }
                 }
-
                 connection.Close();
             }
 
