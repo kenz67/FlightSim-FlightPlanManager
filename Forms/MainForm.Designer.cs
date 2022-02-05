@@ -64,6 +64,8 @@ namespace FlightPlanManager
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.showMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.contextMenuStripGridRightClick.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.planObjectBindingSource)).BeginInit();
@@ -215,34 +217,36 @@ namespace FlightPlanManager
             this.contextMenuStripGridRightClick.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.importToolStripMenuItem1,
             this.exportToolStripMenuItem,
+            this.toolStripSeparator2,
+            this.showMapToolStripMenuItem,
             this.toolStripSeparator1,
             this.deleteToolStripMenuItem});
             this.contextMenuStripGridRightClick.Name = "contextMenuStrip1";
-            this.contextMenuStripGridRightClick.Size = new System.Drawing.Size(111, 76);
+            this.contextMenuStripGridRightClick.Size = new System.Drawing.Size(181, 126);
             // 
             // importToolStripMenuItem1
             // 
             this.importToolStripMenuItem1.Name = "importToolStripMenuItem1";
-            this.importToolStripMenuItem1.Size = new System.Drawing.Size(110, 22);
+            this.importToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.importToolStripMenuItem1.Text = "Import";
             this.importToolStripMenuItem1.Click += new System.EventHandler(this.ImportToolStripMenuItem_Click);
             // 
             // exportToolStripMenuItem
             // 
             this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            this.exportToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.exportToolStripMenuItem.Text = "Export";
             this.exportToolStripMenuItem.Click += new System.EventHandler(this.ExportToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(107, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
             // 
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.deleteToolStripMenuItem.Text = "Delete";
             // 
             // planObjectBindingSource
@@ -280,7 +284,7 @@ namespace FlightPlanManager
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
-            this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
+            this.helpToolStripMenuItem.Click += new System.EventHandler(this.HelpToolStripMenuItem_Click);
             // 
             // dataGridViewTextBoxColumn1
             // 
@@ -301,6 +305,18 @@ namespace FlightPlanManager
             this.dataGridViewTextBoxColumn2.MaxInputLength = 5;
             this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
             this.dataGridViewTextBoxColumn2.ReadOnly = true;
+            // 
+            // showMapToolStripMenuItem
+            // 
+            this.showMapToolStripMenuItem.Name = "showMapToolStripMenuItem";
+            this.showMapToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.showMapToolStripMenuItem.Text = "Show Map";
+            this.showMapToolStripMenuItem.Click += new System.EventHandler(this.ShowMapToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
             // 
             // MainForm
             // 
@@ -349,6 +365,8 @@ namespace FlightPlanManager
         private DataGridViewTextBoxColumn notesDataGridViewTextBoxColumn;
         private ToolStripMenuItem exportToolStripMenuItem;
         private ToolStripSeparator toolStripSeparator1;
+        private ToolStripSeparator toolStripSeparator2;
+        private ToolStripMenuItem showMapToolStripMenuItem;
     }
 }
 
