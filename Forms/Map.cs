@@ -86,7 +86,7 @@ namespace FlightPlanManager
                     }
                     else
                     {
-                        marker = new GMarkerGoogle(point, GMarkerGoogleType.blue);
+                        marker = new GMarkerGoogle(point, waypoint.ATCWaypointType.Equals("Airport") ? GMarkerGoogleType.orange : GMarkerGoogleType.blue);
                     }
 
                     if (i == data.FlightPlan_FlightPlan.ATCWaypoint.Count / 2)
