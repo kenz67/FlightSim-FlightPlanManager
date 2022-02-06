@@ -13,6 +13,8 @@ using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
 
+// https://www.programmerall.com/article/63301262890/
+
 namespace FlightPlanManager
 {
     public partial class Map : Form
@@ -35,6 +37,8 @@ namespace FlightPlanManager
                 this.SetBounds(settings[1], settings[2], settings[3], settings[4]);
                 this.WindowState = (FormWindowState)settings[0];
             }
+
+            gMapControl1.DragButton = MouseButtons.Left;
         }
 
         private void Map_Closing(object sender, System.ComponentModel.CancelEventArgs e)
