@@ -200,7 +200,7 @@ namespace FlightPlanManager
 
                             double distance = 0;
 
-                            var lastPoint = GeoCoordinates.GetGeoCoodinate(data.FlightPlan_FlightPlan.DepartureLLA);
+                            var lastPoint = GeoCoordinates.GetGeoCoodinate(data.FlightPlan_FlightPlan?.DepartureLLA);
                             foreach (var waypoint in data.FlightPlan_FlightPlan.ATCWaypoint)
                             {
                                 if (waypoint.ATCWaypointType.Equals("Airport"))
@@ -216,7 +216,7 @@ namespace FlightPlanManager
                                 lastPoint = newPoint;
                             }
 
-                            distance += lastPoint.GetDistanceTo(GeoCoordinates.GetGeoCoodinate(data.FlightPlan_FlightPlan.DestinationLLA));
+                            distance += lastPoint.GetDistanceTo(GeoCoordinates.GetGeoCoodinate(data.FlightPlan_FlightPlan?.DestinationLLA));
 
                             var plan = new DbPlanObject
                             {
@@ -245,7 +245,7 @@ namespace FlightPlanManager
                             }
                             else
                             {
-                                MessageBox.Show($"A plan with the name \"{plan.Name}\" already exists", "Import Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                MessageBox.Show($"The file \"{plan.OrigFileName}\" has already been imported for plan name \"{plan.Name}\"", "Import Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
                         }
                         catch

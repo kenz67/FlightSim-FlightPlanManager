@@ -1,10 +1,5 @@
 ﻿using FlightPlanManager.DataObjects;
-using System;
-using System.Collections.Generic;
 using System.Data.SQLite;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FlightPlanManager.Services
 {
@@ -68,14 +63,13 @@ namespace FlightPlanManager.Services
         public static SortableBindingList<DbPlanObject> GetData()
         {
             var result = new SortableBindingList<DbPlanObject>();
+            using (var connection = new SQLiteConnection($"Data Source={DbCommon.DbName}"))
             {
-                using (var connection = new SQLiteConnection($"Data Source={DbCommon.DbName}"))
-                {
-                    connection.Open();
+                connection.Open();
 
-                    using (SQLiteCommand cmd = connection.CreateCommand())
-                    {
-                        cmd.CommandText = @"SELECT
+                using (SQLiteCommand cmd = connection.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT
                                [id]
                               ,[planName]
                               ,[type]
@@ -92,27 +86,26 @@ namespace FlightPlanManager.Services
                         FROM [planData]
                         ORDER BY importDate DESC";
 
-                        using (var rdr = cmd.ExecuteReader())
+                    using (var rdr = cmd.ExecuteReader())
+                    {
+                        while (rdr.Read())
                         {
-                            while (rdr.Read())
+                            result.Add(new DbPlanObject
                             {
-                                result.Add(new DbPlanObject
-                                {
-                                    Id = rdr.GetInt32(0),
-                                    Name = rdr.GetString(1),
-                                    Type = rdr.GetString(2),
-                                    Departure = rdr.GetString(3),
-                                    Destination = rdr.GetString(4),
-                                    Distance = (double)rdr.GetDecimal(5),
-                                    Rating = rdr.GetInt32(6),
-                                    Group = rdr.GetString(7),
-                                    Notes = rdr.GetString(8),
-                                    Plan = rdr.GetString(9),
-                                    OrigFileName = rdr.GetString(10),
-                                    OrigFullFileName = rdr.GetString(11),
-                                    ImportDate = rdr.GetDateTime(12)
-                                });
-                            }
+                                Id = rdr.GetInt32(0),
+                                Name = rdr.GetString(1),
+                                Type = rdr.GetString(2),
+                                Departure = rdr.GetString(3),
+                                Destination = rdr.GetString(4),
+                                Distance = (double)rdr.GetDecimal(5),
+                                Rating = rdr.GetInt32(6),
+                                Group = rdr.GetString(7),
+                                Notes = rdr.GetString(8),
+                                Plan = rdr.GetString(9),
+                                OrigFileName = rdr.GetString(10),
+                                OrigFullFileName = rdr.GetString(11),
+                                ImportDate = rdr.GetDateTime(12)
+                            });
                         }
                     }
                 }
@@ -139,10 +132,10 @@ namespace FlightPlanManager.Services
                     cmd.Parameters.AddWithValue("@notes", plan.Notes);
                     cmd.Parameters.AddWithValue("@plan", plan.Plan);
                     cmd.Parameters.AddWithValue("@filename", plan.OrigFileName);
-                    cmd.Parameters.AddWithValue("@fulFileName", plan.OrigFullFileName);
+                    cmd.Parameters.AddWithValue("@fullFileName", plan.OrigFullFileName);
                     cmd.Parameters.AddWithValue("@importDate", plan.ImportDate);
 
-                    cmd.CommandText = "SELECT planName FROM planData WHERE planName = @name";
+                    cmd.CommandText = "SELECT planName FROM planData WHERE planName = @name AND filename = @filename";
                     using (var rdr = cmd.ExecuteReader())
                     {
                         if (rdr.HasRows)
@@ -175,7 +168,7 @@ namespace FlightPlanManager.Services
                                         @notes,
                                         @plan,
                                         @filename,
-                                        @fulFileName,
+                                        @fullFileName,
                                         @importDate)";
                     cmd.ExecuteNonQuery();
                     cmd.CommandText = "SELECT last_insert_rowid()";
