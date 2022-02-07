@@ -1,4 +1,5 @@
 ﻿using FlightPlanManager.Services;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,6 +20,8 @@ namespace FlightPlanManager.DataObjects
         public string Type { get; set; }
         public string Departure { get; set; }
         public string Destination { get; set; }
+
+        private readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         public int Rating
         {
@@ -47,12 +50,17 @@ namespace FlightPlanManager.DataObjects
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+#pragma warning disable S1172 // Unused method parameters should be removed
+
         private void OnPropertyChanged(object sender, string _)
         {
             if (PropertyChanged != null)
             {
+                Logger.Info($"Updating {(sender as DbPlanObject)?.Name}");
                 DbData.Update(sender as DbPlanObject);
             }
         }
+
+#pragma warning restore S1172 // Unused method parameters should be removed
     }
 }

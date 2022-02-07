@@ -1,5 +1,6 @@
 ﻿using FlightPlanManager.DataObjects;
 using FlightPlanManager.Services;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -15,9 +16,11 @@ namespace FlightPlanManager
     public partial class MainForm : Form
     {
         private SortableBindingList<DbPlanObject> d = new SortableBindingList<DbPlanObject>();
+        private readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         public MainForm()
         {
+            Logger.Info($"Application Version {Application.ProductVersion}");
             string appDir = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\FlightPlanManager";
             if (!Directory.Exists(appDir))
             {
@@ -138,6 +141,7 @@ namespace FlightPlanManager
             Int32 rowToDelete = dataGridView1.Rows.GetFirstRow(DataGridViewElementStates.Selected);
             if (MessageBox.Show($"Are you sure you want to delete \"{dataGridView1.Rows[rowToDelete].Cells["nameDataGridViewColumn"].Value}\" plan?", "Deleting", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
+                Logger.Info($"Deleting {dataGridView1.Rows[rowToDelete].Cells["nameDataGridViewColumn"].Value}");
                 DbData.Delete((int)dataGridView1.Rows[rowToDelete].Cells["id"].Value);
                 dataGridView1.Rows.RemoveAt(rowToDelete);
                 dataGridView1.ClearSelection();
@@ -184,6 +188,8 @@ namespace FlightPlanManager
 
                     foreach (var planFile in openFileDialog.FileNames)
                     {
+                        Logger.Info($"Importing {planFile}");
+
                         var waypoints = 0;
                         var airports = 0;
                         try
@@ -245,12 +251,18 @@ namespace FlightPlanManager
                             }
                             else
                             {
-                                MessageBox.Show($"The file \"{plan.OrigFileName}\" has already been imported for plan name \"{plan.Name}\"", "Import Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                var txt = $"The file \"{plan.OrigFileName}\" has already been imported for plan name \"{plan.Name}\"";
+
+                                Logger.Info(txt);
+                                MessageBox.Show(txt, "Import Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
                         }
-                        catch
+                        catch (Exception ex)
                         {
-                            MessageBox.Show($"Error reading {planFile}, invalid format", "Import Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            var txt = $"Error reading {planFile}, invalid format";
+
+                            Logger.Error(ex, txt);
+                            MessageBox.Show(txt, "Import Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     }
                 }
