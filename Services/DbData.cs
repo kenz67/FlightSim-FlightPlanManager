@@ -40,17 +40,17 @@ namespace FlightPlanManager.Services
                             result = new DbPlanObject
                             {
                                 Id = rdr.GetInt32(0),
-                                Name = rdr.GetString(1),
-                                Type = rdr.GetString(2),
-                                Departure = rdr.GetString(3),
-                                Destination = rdr.GetString(4),
+                                Name = (string)rdr[1],
+                                Type = (string)rdr[2],
+                                Departure = (string)rdr[3],
+                                Destination = (string)rdr[4],
                                 Distance = (double)rdr.GetDecimal(5),
                                 Rating = rdr.GetInt32(6),
-                                Group = rdr.GetString(7),
-                                Notes = rdr.GetString(8),
-                                Plan = rdr.GetString(9),
-                                OrigFileName = rdr.GetString(10),
-                                OrigFullFileName = rdr.GetString(11),
+                                Group = (string)rdr[7],
+                                Notes = (string)rdr[8],
+                                Plan = (string)rdr[9],
+                                OrigFileName = (string)rdr[10],
+                                OrigFullFileName = (string)rdr[11],
                                 ImportDate = rdr.GetDateTime(12)
                             };
                         }
@@ -90,22 +90,41 @@ namespace FlightPlanManager.Services
                     {
                         while (rdr.Read())
                         {
-                            result.Add(new DbPlanObject
+                            try
                             {
-                                Id = rdr.GetInt32(0),
-                                Name = rdr.GetString(1),
-                                Type = rdr.GetString(2),
-                                Departure = rdr.GetString(3),
-                                Destination = rdr.GetString(4),
-                                Distance = (double)rdr.GetDecimal(5),
-                                Rating = rdr.GetInt32(6),
-                                Group = rdr.GetString(7),
-                                Notes = rdr.GetString(8),
-                                Plan = rdr.GetString(9),
-                                OrigFileName = rdr.GetString(10),
-                                OrigFullFileName = rdr.GetString(11),
-                                ImportDate = rdr.GetDateTime(12)
-                            });
+                                result.Add(new DbPlanObject
+                                {
+                                    Id = rdr.GetInt32(0),
+                                    Name = rdr[1] as string,
+                                    Type = rdr[2] as string,
+                                    Departure = rdr[3] as string,
+                                    Destination = rdr[4] as string,
+                                    Distance = (double)rdr.GetDecimal(5),
+                                    Rating = rdr.GetInt32(6),
+                                    Group = rdr[7] as string,
+                                    Notes = rdr[8] as string,
+                                    Plan = rdr[9] as string,
+                                    OrigFileName = rdr[10] as string,
+                                    OrigFullFileName = rdr[11] as string,
+                                    ImportDate = rdr.GetDateTime(12)
+                                });
+                            }
+                            catch
+                            {
+                                try
+                                {
+                                    result.Add(new DbPlanObject
+                                    {
+                                        Id = rdr.GetInt32(0),
+                                        Name = rdr[1] as string,
+                                        Notes = "Error reading record from Db"
+                                    });
+                                }
+                                catch
+                                {
+                                    // just eat the error, but load the file.
+                                }
+                            }
                         }
                     }
                 }

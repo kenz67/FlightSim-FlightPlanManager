@@ -85,18 +85,27 @@ namespace FlightPlanManager
 
         private void DataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
-            var data = (sender as DataGridView)?.DataSource as SortableBindingList<DbPlanObject>;
-            int column = dataGridView1.CurrentCell.ColumnIndex;
-            string headerText = dataGridView1.Columns[column].HeaderText;
-
-            if (headerText.Equals("Group"))
+            try
             {
-                TextBox autoText = e.Control as TextBox;
-                autoText.AutoCompleteMode = AutoCompleteMode.Suggest;
-                autoText.AutoCompleteSource = AutoCompleteSource.CustomSource;
-                AutoCompleteStringCollection DataCollection = new AutoCompleteStringCollection();
-                AddItemsToAutoCompleteList(DataCollection, data);
-                autoText.AutoCompleteCustomSource = DataCollection;
+                var data = (sender as DataGridView)?.DataSource as SortableBindingList<DbPlanObject>;
+                int column = dataGridView1.CurrentCell.ColumnIndex;
+                string headerText = dataGridView1.Columns[column].HeaderText;
+
+                if (headerText.Equals("Group"))
+                {
+                    TextBox autoText = e.Control as TextBox;
+                    if (autoText != null)
+                    {
+                        autoText.AutoCompleteMode = AutoCompleteMode.Suggest;
+                        autoText.AutoCompleteSource = AutoCompleteSource.CustomSource;
+                        AutoCompleteStringCollection DataCollection = new AutoCompleteStringCollection();
+                        AddItemsToAutoCompleteList(DataCollection, data);
+                        autoText.AutoCompleteCustomSource = DataCollection;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
             }
         }
 
@@ -104,8 +113,11 @@ namespace FlightPlanManager
         {
             foreach (var plan in data)
             {
-                if (!col.Contains(plan.Group))
-                    col.Add(plan.Group);
+                if (plan.Group != null)
+                {
+                    if (!col.Contains(plan.Group))
+                        col.Add(plan.Group);
+                }
             }
         }
 
@@ -222,8 +234,6 @@ namespace FlightPlanManager
                                 lastPoint = newPoint;
                             }
 
-                            distance += lastPoint.GetDistanceTo(GeoCoordinates.GetGeoCoodinate(data.FlightPlan_FlightPlan?.DestinationLLA));
-
                             var plan = new DbPlanObject
                             {
                                 Name = data.FlightPlan_FlightPlan.Title,
@@ -259,7 +269,7 @@ namespace FlightPlanManager
                         }
                         catch (Exception ex)
                         {
-                            var txt = $"Error reading {planFile}, invalid format";
+                            var txt = $"Error reading {planFile}, invalid format\n\n\nSee log file {Application.StartupPath}\\current.log for details";
 
                             Logger.Error(ex, txt);
                             MessageBox.Show(txt, "Import Error", MessageBoxButtons.OK, MessageBoxIcon.Error);

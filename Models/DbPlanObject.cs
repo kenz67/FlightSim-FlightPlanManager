@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace FlightPlanManager.DataObjects
 {
@@ -54,10 +55,19 @@ namespace FlightPlanManager.DataObjects
 
         private void OnPropertyChanged(object sender, string _)
         {
-            if (PropertyChanged != null)
+            try
             {
-                Logger.Info($"Updating {(sender as DbPlanObject)?.Name}");
-                DbData.Update(sender as DbPlanObject);
+                if (PropertyChanged != null)
+                {
+                    Logger.Info($"Updating {(sender as DbPlanObject)?.Name}");
+                    DbData.Update(sender as DbPlanObject);
+                }
+            }
+            catch (Exception ex)
+            {
+                var txt = $"Error Updating {(sender as DbPlanObject)?.Name}, invalid format\n\n\nSee log file {Application.StartupPath}\\current.log for details";
+                Logger.Error(ex, txt);
+                MessageBox.Show(txt, "Save Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
