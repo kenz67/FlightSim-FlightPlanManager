@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Device.Location;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -10,6 +11,18 @@ namespace FlightPlanManager.Services
 {
     public static class GeoCoordinates
     {
+        private static bool hasError = false;
+
+        public static bool HasError
+        {
+            get
+            {
+                var tmp = hasError;
+                hasError = false;
+                return tmp;
+            }
+        }
+
         public static GeoCoordinate GetGeoCoodinate(string strLatLong)
         {
             var latLongAlt = strLatLong.Split(',');
@@ -21,13 +34,32 @@ namespace FlightPlanManager.Services
 
         private static double GetValue(string data)
         {
-            var (direction, value) = GetDirection(data);
-            var parts = value.Split(' ');
-            var degrees = double.Parse(Regex.Match(parts[0], @"\d+").Value);
-            var minutes = double.Parse(Regex.Match(parts[1], @"\d+").Value);
-            var seconds = double.Parse(Regex.Match(parts[2], @"[0-9\.]+").Value);
+            //strange code to find un-reproducable error.  Maybe related to language settings?
+            var step = 0;
+            try
+            {
+                var (direction, value) = GetDirection(data);
+                var parts = value.Split(new char[0], StringSplitOptions.RemoveEmptyEntries);
+                var degrees = double.Parse(Regex.Match(parts[step++], @"\d+").Value, new CultureInfo("us-US"));
+                var minutes = double.Parse(Regex.Match(parts[step++], @"\d+").Value, new CultureInfo("us-US"));
+                var seconds = double.Parse(Regex.Match(parts[step++].Replace(',', '.'), @"[0-9\.]+").Value, new CultureInfo("us-US"));
 
-            return (degrees + (minutes / 60) + (seconds / 3600)) * (direction.Equals("N") || direction.Equals("E") ? 1 : -1);
+                return (degrees + (minutes / 60) + (seconds / 3600)) * (direction.Equals("N") || direction.Equals("E") ? 1 : -1);
+            }
+            catch (Exception ex)
+            {
+                string txt;
+                switch (step - 1)
+                {
+                    case 0: txt = "degrees"; break;
+                    case 1: txt = "minutes"; break;
+                    default: txt = "seconds"; break;
+                }
+                var Logger = NLog.LogManager.GetCurrentClassLogger();
+                Logger.Error(ex, $"Error parsing Lat/Long while calculating {txt} for {data}.\n");
+                hasError = true;
+                return 0;
+            }
         }
 
         private static (string, string) GetDirection(string val)

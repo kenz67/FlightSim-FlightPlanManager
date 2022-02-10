@@ -4,6 +4,7 @@ using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Device.Location;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -196,6 +197,7 @@ namespace FlightPlanManager
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
+                    Cursor.Current = Cursors.WaitCursor;
                     DbSettings.SaveSetting(DbCommon.SettingsDefaultFolder, new FileInfo(openFileDialog.FileName).DirectoryName);
 
                     foreach (var planFile in openFileDialog.FileNames)
@@ -218,9 +220,15 @@ namespace FlightPlanManager
 
                             double distance = 0;
 
-                            var lastPoint = GeoCoordinates.GetGeoCoodinate(data.FlightPlan_FlightPlan?.DepartureLLA);
+                            //var lastPoint = GeoCoordinates.GetGeoCoodinate(data.FlightPlan_FlightPlan?.DepartureLLA);
+                            GeoCoordinate lastPoint = null;
                             foreach (var waypoint in data.FlightPlan_FlightPlan.ATCWaypoint)
                             {
+                                if (lastPoint == null)
+                                {
+                                    lastPoint = GeoCoordinates.GetGeoCoodinate(waypoint.WorldPosition);
+                                }
+
                                 if (waypoint.ATCWaypointType.Equals("Airport"))
                                 {
                                     airports++;
@@ -236,9 +244,9 @@ namespace FlightPlanManager
 
                             var plan = new DbPlanObject
                             {
-                                Name = data.FlightPlan_FlightPlan.Title,
-                                Departure = data.FlightPlan_FlightPlan.DepartureID,
-                                Destination = data.FlightPlan_FlightPlan.DestinationID,
+                                Name = data.FlightPlan_FlightPlan.Title ?? DateTime.Now.ToString(),
+                                Departure = data.FlightPlan_FlightPlan.DepartureID ?? String.Empty,
+                                Destination = data.FlightPlan_FlightPlan.DestinationID ?? String.Empty,
                                 Distance = Math.Round(distance * 0.000539957, 1),
                                 Group = string.Empty,
                                 Notes = $"{waypoints} waypt, {airports} arpt",
@@ -258,6 +266,12 @@ namespace FlightPlanManager
                                 dataGridView1.ClearSelection();
                                 dataGridView1.Rows[dataGridView1.Rows.Count - 1].Selected = true;
                                 dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.SelectedRows[0].Index;
+
+                                if (GeoCoordinates.HasError)
+                                {
+                                    var txt = $"There was an error calculating the total distance for {planFile}\n\n\nSee log file {Application.StartupPath}\\current.log for details";
+                                    MessageBox.Show(txt, "Import Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                }
                             }
                             else
                             {
@@ -273,6 +287,10 @@ namespace FlightPlanManager
 
                             Logger.Error(ex, txt);
                             MessageBox.Show(txt, "Import Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                        finally
+                        {
+                            Cursor.Current = Cursors.Default;
                         }
                     }
                 }
