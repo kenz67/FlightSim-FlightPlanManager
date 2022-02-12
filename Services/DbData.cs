@@ -40,17 +40,17 @@ namespace FlightPlanManager.Services
                             result = new DbPlanObject
                             {
                                 Id = rdr.GetInt32(0),
-                                Name = (string)rdr[1],
-                                Type = (string)rdr[2],
-                                Departure = (string)rdr[3],
-                                Destination = (string)rdr[4],
+                                Name = (string)rdr[1] ?? string.Empty,
+                                Type = (string)rdr[2] ?? string.Empty,
+                                Departure = (string)rdr[3] ?? string.Empty,
+                                Destination = (string)rdr[4] ?? string.Empty,
                                 Distance = (double)rdr.GetDecimal(5),
                                 Rating = rdr.GetInt32(6),
-                                Group = (string)rdr[7],
-                                Notes = (string)rdr[8],
-                                Plan = (string)rdr[9],
-                                OrigFileName = (string)rdr[10],
-                                OrigFullFileName = (string)rdr[11],
+                                //Group = (string)rdr[7] ?? string.Empty,
+                                Notes = (string)rdr[8] ?? string.Empty,
+                                Plan = (string)rdr[9] ?? string.Empty,
+                                OrigFileName = (string)rdr[10] ?? string.Empty,
+                                OrigFullFileName = (string)rdr[11] ?? string.Empty,
                                 ImportDate = rdr.GetDateTime(12)
                             };
                         }

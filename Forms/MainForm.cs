@@ -1,18 +1,20 @@
 ﻿using FlightPlanManager.DataObjects;
 using FlightPlanManager.Services;
-using NLog;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Device.Location;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace FlightPlanManager
+namespace FlightPlanManager.Forms
 {
     public partial class MainForm : Form
     {
@@ -21,37 +23,32 @@ namespace FlightPlanManager
 
         public MainForm()
         {
-            Logger.Info($"Application Version {Application.ProductVersion}");
-            string appDir = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\FlightPlanManager";
-            if (!Directory.Exists(appDir))
-            {
-                Directory.CreateDirectory(appDir);
-            }
-
-            new ConfigureDb().InitDb();
-
             InitializeComponent();
+            this.Load += new System.EventHandler(this.MainForm_Load);
+            this.dataGridView1.ContextMenuStrip = this.contextMenuStrip1;
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void MainForm_Load(object sender, EventArgs e)
         {
             this.Text = $"Flight Plan Manager - {Application.ProductVersion}";
 
             d = DbData.GetData();
 
             dataGridView1.DataSource = d;
-            dataGridView1.Columns[0].Visible = false;
+            dataGridView1.Columns["id"].Visible = false;
+            dataGridView1.Columns["planDataGridViewTextBoxColumn"].Visible = false;
+            dataGridView1.Columns["origFullFileNameDataGridViewTextBoxColumn"].Visible = false;
             dataGridView1.Columns["importDateDataGridViewTextBoxColumn"].DefaultCellStyle.Format = "yyyy-MM-dd";
 
             dataGridView1.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Top;
-            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            //   dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
             dataGridView1.UserDeletingRow += DataGridView1_UserDeletingRow;
             dataGridView1.EditingControlShowing += DataGridView1_EditingControlShowing;
             dataGridView1.MouseDown += DataGridView1_MouseDown;
-            deleteToolStripMenuItem.Click += DataGridView1_Delete;
+            //deleteToolStripMenuItem.Click += DataGridView1_Delete;
 
-            this.SizeChanged += Form_sizeChanged;
+            //this.SizeChanged += Form_sizeChanged;
             this.FormClosing += AppClosing;
 
             RestoreWindowPosition();
@@ -78,12 +75,6 @@ namespace FlightPlanManager
                 rect.Left, rect.Top, rect.Width, rect.Height));
         }
 
-        private void Form_sizeChanged(object sender, EventArgs e)
-        {
-            //shouldn't need this, but anchor not working
-            dataGridView1.MinimumSize = new Size(this.Width - 22, this.Height - 22);
-        }
-
         private void DataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
             try
@@ -107,6 +98,7 @@ namespace FlightPlanManager
             }
             catch (Exception ex)
             {
+                Logger.Error(ex, "Auto Complete");
             }
         }
 
@@ -131,56 +123,6 @@ namespace FlightPlanManager
                 {
                     dataGridView1.ClearSelection();
                     dataGridView1.Rows[hti.RowIndex].Selected = true;
-                }
-            }
-        }
-
-        private void ShowMapToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var selectedRow = dataGridView1.Rows.GetFirstRow(DataGridViewElementStates.Selected);
-            var id = (int)dataGridView1.Rows[selectedRow].Cells["id"].Value;
-            var m = new Map();
-            m.ConfigureMap(id);
-            m.ShowDialog();
-        }
-
-        private void DataGridView1_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
-        {
-            DataGridView1_Delete(sender, e);
-        }
-
-        private void DataGridView1_Delete(object sender, EventArgs e)
-        {
-            Int32 rowToDelete = dataGridView1.Rows.GetFirstRow(DataGridViewElementStates.Selected);
-            if (MessageBox.Show($"Are you sure you want to delete \"{dataGridView1.Rows[rowToDelete].Cells["nameDataGridViewColumn"].Value}\" plan?", "Deleting", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-            {
-                Logger.Info($"Deleting {dataGridView1.Rows[rowToDelete].Cells["nameDataGridViewColumn"].Value}");
-                DbData.Delete((int)dataGridView1.Rows[rowToDelete].Cells["id"].Value);
-                dataGridView1.Rows.RemoveAt(rowToDelete);
-                dataGridView1.ClearSelection();
-            }
-        }
-
-        private void ExportToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Int32 rowToExport = dataGridView1.Rows.GetFirstRow(DataGridViewElementStates.Selected);
-            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
-            {
-                var folder = DbSettings.GetSetting(DbCommon.SettingsDefaultFolder);
-                var rowData = DbData.GetData((int)dataGridView1.Rows[rowToExport].Cells["id"].Value);
-                saveFileDialog.Filter = "Plan files (*.pln)|*.pln";
-                saveFileDialog.FileName = rowData.OrigFileName;
-                saveFileDialog.InitialDirectory = folder;
-                saveFileDialog.RestoreDirectory = true;
-                if (saveFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    DbSettings.SaveSetting(DbCommon.SettingsDefaultFolder, new FileInfo(saveFileDialog.FileName).DirectoryName);
-                    using (StreamWriter stream = new StreamWriter(saveFileDialog.FileName))
-                    {
-                        var planXml = new XmlDocument();
-                        planXml.LoadXml(rowData.Plan);
-                        planXml.Save(stream);
-                    }
                 }
             }
         }
@@ -301,6 +243,61 @@ namespace FlightPlanManager
         {
             var helpDialog = new FlightPlanManager.Forms.Help();
             helpDialog.ShowDialog();
+        }
+
+        private void ShowMapToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var selectedRow = dataGridView1.Rows.GetFirstRow(DataGridViewElementStates.Selected);
+            var id = (int)dataGridView1.Rows[selectedRow].Cells["id"].Value;
+            var m = new Map();
+            m.ConfigureMap(id);
+            m.ShowDialog();
+        }
+
+        private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DataGridView1_Delete(sender, e);
+        }
+
+        private void DataGridView1_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
+        {
+            DataGridView1_Delete(sender, e);
+        }
+
+        private void DataGridView1_Delete(object sender, EventArgs e)
+        {
+            Int32 rowToDelete = dataGridView1.Rows.GetFirstRow(DataGridViewElementStates.Selected);
+            if (MessageBox.Show($"Are you sure you want to delete \"{dataGridView1.Rows[rowToDelete].Cells["nameDataGridViewTextBoxColumn"].Value}\" plan?", "Deleting", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                Logger.Info($"Deleting {dataGridView1.Rows[rowToDelete].Cells["nameDataGridViewTextBoxColumn"].Value}");
+                DbData.Delete((int)dataGridView1.Rows[rowToDelete].Cells["id"].Value);
+                dataGridView1.Rows.RemoveAt(rowToDelete);
+                dataGridView1.ClearSelection();
+            }
+        }
+
+        private void ExportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Int32 rowToExport = dataGridView1.Rows.GetFirstRow(DataGridViewElementStates.Selected);
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            {
+                var folder = DbSettings.GetSetting(DbCommon.SettingsDefaultFolder);
+                var rowData = DbData.GetData((int)dataGridView1.Rows[rowToExport].Cells["id"].Value);
+                saveFileDialog.Filter = "Plan files (*.pln)|*.pln";
+                saveFileDialog.FileName = rowData.OrigFileName;
+                saveFileDialog.InitialDirectory = folder;
+                saveFileDialog.RestoreDirectory = true;
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    DbSettings.SaveSetting(DbCommon.SettingsDefaultFolder, new FileInfo(saveFileDialog.FileName).DirectoryName);
+                    using (StreamWriter stream = new StreamWriter(saveFileDialog.FileName))
+                    {
+                        var planXml = new XmlDocument();
+                        planXml.LoadXml(rowData.Plan);
+                        planXml.Save(stream);
+                    }
+                }
+            }
         }
     }
 }

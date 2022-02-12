@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using FlightPlanManager.Forms;
+using NLog;
 using NLog.Config;
 using NLog.Targets;
 using System;
@@ -31,7 +32,7 @@ namespace FlightPlanManager
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            Application.Run(new Forms.MainForm());
         }
     }
 }
