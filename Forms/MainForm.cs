@@ -41,7 +41,7 @@ namespace FlightPlanManager.Forms
             dataGridView1.Columns["importDateDataGridViewTextBoxColumn"].DefaultCellStyle.Format = "yyyy-MM-dd";
 
             dataGridView1.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Top;
-            //   dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
 
             dataGridView1.UserDeletingRow += DataGridView1_UserDeletingRow;
             dataGridView1.EditingControlShowing += DataGridView1_EditingControlShowing;
