@@ -24,8 +24,10 @@ namespace FlightPlanManager.DataObjects
 
                 CreateSettingTable(connection);
                 CreateDataTable(connection);
+                CreateGridColumnsTable(connection);
 
                 LoadSettingTable();
+                LoadGridColumnsTable(connection);
             }
         }
 
@@ -38,6 +40,49 @@ namespace FlightPlanManager.DataObjects
                     DataKey VARCHAR(100) NOT NULL PRIMARY KEY,
                     DataValue VARCHAR(100) NOT NULL
                 )";
+
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        private void CreateGridColumnsTable(SQLiteConnection conn)
+        {
+            using (SQLiteCommand cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = @"
+                CREATE TABLE IF NOT EXISTS gridColumns (
+                    ColumnKey VARCHAR(100) NOT NULL PRIMARY KEY,
+                    ColumnName VARCHAR(100) NOT NULL,
+                    DisplayOrder INT NOT NULL
+                )";
+
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        //   create constants
+        //   SELECT '{SettingDefinitions.ApplyFuel}', 'true' UNION
+        private void LoadGridColumnsTable(SQLiteConnection conn)
+        {
+            using (SQLiteCommand cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = @"
+                WITH v AS (
+	                SELECT 'nameDataGridViewTextBoxColumn' as ColumnKey, 'Name' as ColumnName, 0 as DisplayOrder UNION
+                    SELECT 'typeDataGridViewTextBoxColumn', 'Type', 1 UNION
+                    SELECT 'importDateDataGridViewTextBoxColumn', 'Import Date', 2 UNION
+                    SELECT 'departureDataGridViewTextBoxColumn', 'Departure', 3 UNION
+                    SELECT 'destinationDataGridViewTextBoxColumn', 'Destination', 4 UNION
+                    SELECT 'ratingDataGridViewTextBoxColumn', 'Rating', 5 UNION
+                    SELECT 'distanceDataGridViewTextBoxColumn', 'Distance', 6 UNION
+                    SELECT 'groupDataGridViewTextBoxColumn', 'Group', 7 UNION
+                    SELECT 'origFileNameDataGridViewTextBoxColumn', 'Orig File Name', 8 UNION
+                    SELECT 'notesDataGridViewTextBoxColumn', 'Notes', 9
+                )
+                INSERT INTO gridColumns (ColumnKey, ColumnName, DisplayOrder)
+                    SELECT ColumnKey, ColumnName, DisplayOrder FROM v t1
+                    WHERE NOT EXISTS (SELECT 1 FROM gridColumns t2 WHERE t1.ColumnKey = t2.ColumnKey);
+            ";
 
                 cmd.ExecuteNonQuery();
             }

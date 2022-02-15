@@ -1,9 +1,11 @@
 ﻿using FlightPlanManager.DataObjects;
+using FlightPlanManager.Models;
 using FlightPlanManager.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Common;
 using System.Device.Location;
 using System.Drawing;
 using System.IO;
@@ -23,8 +25,10 @@ namespace FlightPlanManager.Forms
 
         public MainForm()
         {
+            var config = new ConfigureDb();
+            config.InitDb();
             InitializeComponent();
-            this.Load += new System.EventHandler(this.MainForm_Load);
+            this.Load += this.MainForm_Load;
             this.dataGridView1.ContextMenuStrip = this.contextMenuStrip1;
         }
 
@@ -46,9 +50,13 @@ namespace FlightPlanManager.Forms
             dataGridView1.UserDeletingRow += DataGridView1_UserDeletingRow;
             dataGridView1.EditingControlShowing += DataGridView1_EditingControlShowing;
             dataGridView1.MouseDown += DataGridView1_MouseDown;
-            //deleteToolStripMenuItem.Click += DataGridView1_Delete;
+            
+            dataGridView1.Columns.OfType<DataGridViewColumn>().ToList().ForEach(col => col.Selected = false);
 
+            //deleteToolStripMenuItem.Click += DataGridView1_Delete;
             //this.SizeChanged += Form_sizeChanged;
+
+            SetupColumns();
             this.FormClosing += AppClosing;
 
             RestoreWindowPosition();
@@ -85,8 +93,7 @@ namespace FlightPlanManager.Forms
 
                 if (headerText.Equals("Group"))
                 {
-                    TextBox autoText = e.Control as TextBox;
-                    if (autoText != null)
+                    if (e.Control is TextBox autoText)
                     {
                         autoText.AutoCompleteMode = AutoCompleteMode.Suggest;
                         autoText.AutoCompleteSource = AutoCompleteSource.CustomSource;
@@ -296,6 +303,43 @@ namespace FlightPlanManager.Forms
                         planXml.LoadXml(rowData.Plan);
                         planXml.Save(stream);
                     }
+                }
+            }
+        }
+
+        private void SelectColumnsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var dialog = new ColumnSelect();
+            if (dialog.ShowDialog().Equals(DialogResult.OK))
+            {
+                var cols = new List<DbGridColumn>();
+                foreach (DbGridColumn item in dialog.Availble.Items)
+                {
+                    cols.Add(new DbGridColumn { ColumnKey = item.ColumnKey, ColumnName = item.ColumnName, DisplayOrder = -1 });
+                }
+
+                short cnt = 0;
+                foreach (DbGridColumn item in dialog.Selected.Items)
+                {
+                    cols.Add(new DbGridColumn { ColumnKey = item.ColumnKey, ColumnName = item.ColumnName, DisplayOrder = cnt++ });
+                }
+
+                DbColumns.SaveData(cols);
+                SetupColumns();
+            }
+        }
+
+        private void SetupColumns()
+        {
+            dataGridView1.Columns.OfType<DataGridViewColumn>().ToList().ForEach(col => col.Visible = false);
+
+            var cols = DbColumns.GetData();
+            foreach (var c in cols)
+            {
+                if (!c.DisplayOrder.Equals(-1))
+                {
+                    dataGridView1.Columns[c.ColumnKey].Visible = true;
+                    dataGridView1.Columns[c.ColumnKey].DisplayIndex = c.DisplayOrder;
                 }
             }
         }

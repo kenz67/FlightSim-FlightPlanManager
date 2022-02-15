@@ -90,6 +90,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\DataGridViewRatingColumn.cs" />
+    <Compile Include="Forms\ColumnSelect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ColumnSelect.Designer.cs">
+      <DependentUpon>ColumnSelect.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Help.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -108,16 +114,21 @@
     <Compile Include="Forms\Map.Designer.cs">
       <DependentUpon>Map.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\DbGridColumn.cs" />
     <Compile Include="Models\PlanObject.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ConfigureDb.cs" />
     <Compile Include="Services\DbCommon.cs" />
     <Compile Include="Models\DbPlanObject.cs" />
+    <Compile Include="Services\DbColumns.cs" />
     <Compile Include="Services\DbData.cs" />
     <Compile Include="Services\DbSettings.cs" />
     <Compile Include="Services\GeoCoordinates.cs" />
     <Compile Include="Services\SortableBindingList.cs" />
+    <EmbeddedResource Include="Forms\ColumnSelect.resx">
+      <DependentUpon>ColumnSelect.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Help.resx">
       <DependentUpon>Help.cs</DependentUpon>
     </EmbeddedResource>
