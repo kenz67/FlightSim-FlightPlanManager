@@ -96,6 +96,7 @@
     <Compile Include="Forms\ColumnSelect.Designer.cs">
       <DependentUpon>ColumnSelect.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FlexibleMessageBox.cs" />
     <Compile Include="Forms\Help.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -113,6 +114,12 @@
     </Compile>
     <Compile Include="Forms\Map.Designer.cs">
       <DependentUpon>Map.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Settings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Settings.Designer.cs">
+      <DependentUpon>Settings.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\DbGridColumn.cs" />
     <Compile Include="Models\PlanObject.cs" />
@@ -137,6 +144,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Map.resx">
       <DependentUpon>Map.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Settings.resx">
+      <DependentUpon>Settings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -26,7 +26,7 @@ namespace FlightPlanManager.DataObjects
                 CreateDataTable(connection);
                 CreateGridColumnsTable(connection);
 
-                LoadSettingTable();
+                LoadSettingTable(connection);
                 LoadGridColumnsTable(connection);
             }
         }
@@ -61,7 +61,6 @@ namespace FlightPlanManager.DataObjects
         }
 
         //   create constants
-        //   SELECT '{SettingDefinitions.ApplyFuel}', 'true' UNION
         private void LoadGridColumnsTable(SQLiteConnection conn)
         {
             using (SQLiteCommand cmd = conn.CreateCommand())
@@ -88,9 +87,23 @@ namespace FlightPlanManager.DataObjects
             }
         }
 
-        private void LoadSettingTable()
+        private void LoadSettingTable(SQLiteConnection conn)
         {
-            DbSettings.SaveSetting(DbCommon.SettingsDefaultFolder, $"C:\\Users\\{Environment.UserName}\\AppData\\Local\\Packages\\Microsoft.FlightSimulator_8wekyb3d8bbwe\\LocalState");
+            //DbSettings.SaveSetting(DbCommon.SettingsDefaultFolder, $"C:\\Users\\{Environment.UserName}\\AppData\\Local\\Packages\\Microsoft.FlightSimulator_8wekyb3d8bbwe\\LocalState");
+            using (SQLiteCommand cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = $@"
+                WITH v AS (
+	                SELECT '{DbCommon.SettingsDefaultFolder}' as DataKey, 'C:\\Users\\{ Environment.UserName}\\AppData\\Local\\Packages\\Microsoft.FlightSimulator_8wekyb3d8bbwe\\LocalState' as DataValue UNION
+                    SELECT '{DbCommon.SettingsOverwrite}', 'True'
+                )
+                INSERT INTO settings (DataKey, DataValue)
+                    SELECT DataKey, DataValue FROM v t1
+                    WHERE NOT EXISTS (SELECT 1 FROM settings t2 WHERE t1.DataKey = t2.DataKey);
+            ";
+
+                cmd.ExecuteNonQuery();
+            }
         }
 
         public void CreateDataTable(SQLiteConnection conn)

@@ -201,6 +201,48 @@ namespace FlightPlanManager.Services
             return id;
         }
 
+        public static int OverwritePlan(DbPlanObject plan)
+        {
+            int id;
+            using (var connection = new SQLiteConnection($"Data Source={DbCommon.DbName}"))
+            {
+                connection.Open();
+
+                using (SQLiteCommand cmd = connection.CreateCommand())
+                {
+                    cmd.Parameters.AddWithValue("@name", plan.Name);
+                    cmd.Parameters.AddWithValue("@type", plan.Type);
+                    cmd.Parameters.AddWithValue("@departureId", plan.Departure);
+                    cmd.Parameters.AddWithValue("@destinationId", plan.Destination);
+                    cmd.Parameters.AddWithValue("@distance", plan.Distance);
+                    cmd.Parameters.AddWithValue("@plan", plan.Plan);
+                    cmd.Parameters.AddWithValue("@filename", plan.OrigFileName);
+                    cmd.Parameters.AddWithValue("@fullFileName", plan.OrigFullFileName);
+                    cmd.Parameters.AddWithValue("@importDate", plan.ImportDate);
+
+                    cmd.CommandText = @"UPDATE planData SET
+                                           planName = @name,
+                                           type = @type,
+                                           departureId = @departureId,
+                                           destinationId = @destinationId,
+                                           distance = @distance,
+                                           plan = @plan,
+                                           filename = @filename,
+                                           fullFileName = @fullFileName,
+                                           importDate = @importDate
+                                        WHERE planName = @name AND filename = @filename";
+                    cmd.ExecuteNonQuery();
+                    cmd.CommandText = "SELECT last_insert_rowid()";
+                    object tmp = cmd.ExecuteScalar();
+                    id = int.Parse(tmp.ToString());
+                }
+
+                connection.Close();
+            }
+
+            return id;
+        }
+
         public static void Update(DbPlanObject data)
         {
             using (var connection = new SQLiteConnection($"Data Source={DbCommon.DbName}"))
