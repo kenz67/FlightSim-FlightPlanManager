@@ -23,10 +23,10 @@ namespace FlightPlanManager.DataObjects
                 connection.Open();
 
                 CreateSettingTable(connection);
+                LoadSettingTable(connection);
+
                 CreateDataTable(connection);
                 CreateGridColumnsTable(connection);
-
-                LoadSettingTable(connection);
                 LoadGridColumnsTable(connection);
             }
         }
@@ -76,7 +76,8 @@ namespace FlightPlanManager.DataObjects
                     SELECT 'distanceDataGridViewTextBoxColumn', 'Distance', 6 UNION
                     SELECT 'groupDataGridViewTextBoxColumn', 'Group', 7 UNION
                     SELECT 'origFileNameDataGridViewTextBoxColumn', 'Orig File Name', 8 UNION
-                    SELECT 'notesDataGridViewTextBoxColumn', 'Notes', 9
+                    SELECT 'notesDataGridViewTextBoxColumn', 'Notes', 9 UNION
+                    SELECT 'fileCreateDateDataTextBoxColumn', 'File Create Date', 10
                 )
                 INSERT INTO gridColumns (ColumnKey, ColumnName, DisplayOrder)
                     SELECT ColumnKey, ColumnName, DisplayOrder FROM v t1
@@ -124,10 +125,39 @@ namespace FlightPlanManager.DataObjects
                     plan TEXT,
                     filename TEXT,
                     fullFileName TEXT,
-                    importDate DATETIME
+                    importDate DATETIME,
+                    fileCreateDate DATETIME
                 )";
 
                 cmd.ExecuteNonQuery();
+            }
+
+            AddColumn(conn, "planData", "fileCreateDate");
+        }
+
+        public void AddColumn(SQLiteConnection conn, string table, string col)
+        {
+            if (!CheckColumnExists(conn, table, col))
+            {
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.Parameters.AddWithValue("@table", table);
+                    cmd.Parameters.AddWithValue("@col", col);
+                    cmd.CommandText = $"ALTER TABLE {table} ADD {col} TEXT NULL";
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public bool CheckColumnExists(SQLiteConnection conn, string table, string col)
+        {
+            using (var cmd = conn.CreateCommand())
+            {
+                cmd.Parameters.AddWithValue("@table", table);
+                cmd.Parameters.AddWithValue("@col", col);
+                cmd.CommandText = "SELECT COUNT(*) AS CNTREC FROM pragma_table_info(@table) WHERE name=@col";
+                var result = Convert.ToInt16(cmd.ExecuteScalar());
+                return result.Equals(1);
             }
         }
     }

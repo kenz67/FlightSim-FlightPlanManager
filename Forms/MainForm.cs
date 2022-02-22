@@ -43,6 +43,7 @@ namespace FlightPlanManager.Forms
             dataGridView1.Columns["planDataGridViewTextBoxColumn"].Visible = false;
             dataGridView1.Columns["origFullFileNameDataGridViewTextBoxColumn"].Visible = false;
             dataGridView1.Columns["importDateDataGridViewTextBoxColumn"].DefaultCellStyle.Format = "yyyy-MM-dd";
+            dataGridView1.Columns["fileCreateDateDataTextBoxColumn"].DefaultCellStyle.Format = "yyyy-MM-dd";
 
             dataGridView1.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Top;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
@@ -245,6 +246,7 @@ namespace FlightPlanManager.Forms
 
             var (distance, airports, waypoints) = CalcDistance(data);
 
+            var fileInfo = new FileInfo(planFile);
             var plan = new DbPlanObject
             {
                 Name = data.FlightPlan_FlightPlan.Title ?? DateTime.Now.ToString(),
@@ -253,12 +255,13 @@ namespace FlightPlanManager.Forms
                 Distance = Math.Round(distance * 0.000539957, 1),
                 Group = string.Empty,
                 Notes = $"{waypoints} waypt, {airports} arpt",
-                OrigFileName = new FileInfo(planFile).Name,
+                OrigFileName = fileInfo.Name,
                 OrigFullFileName = planFile,
                 Rating = 0,
                 ImportDate = DateTime.Now,
                 Plan = doc.InnerXml,
                 Type = data.FlightPlan_FlightPlan.FPType ?? "VFR",
+                FileCreateDate = fileInfo.CreationTime
             };
 
             return plan;

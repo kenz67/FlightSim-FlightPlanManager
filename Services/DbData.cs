@@ -1,4 +1,5 @@
 ﻿using FlightPlanManager.DataObjects;
+using System;
 using System.Data.SQLite;
 
 namespace FlightPlanManager.Services
@@ -30,6 +31,7 @@ namespace FlightPlanManager.Services
                               ,[filename]
                               ,[fullFileName]
                               ,[importDate]
+                             // ,[fileCreateDate]
                         FROM [planData]
                         WHERE id = @id";
 
@@ -46,12 +48,13 @@ namespace FlightPlanManager.Services
                                 Destination = (string)rdr[4] ?? string.Empty,
                                 Distance = (double)rdr.GetDecimal(5),
                                 Rating = rdr.GetInt32(6),
-                                //Group = (string)rdr[7] ?? string.Empty,
+                                Group = (string)rdr[7] ?? string.Empty,
                                 Notes = (string)rdr[8] ?? string.Empty,
                                 Plan = (string)rdr[9] ?? string.Empty,
                                 OrigFileName = (string)rdr[10] ?? string.Empty,
                                 OrigFullFileName = (string)rdr[11] ?? string.Empty,
-                                ImportDate = rdr.GetDateTime(12)
+                                ImportDate = rdr.GetDateTime(12),
+                                //FileCreateDate = rdr.GetDateTime(13) ?? DateTime.MinValue
                             };
                         }
                     }
@@ -83,6 +86,7 @@ namespace FlightPlanManager.Services
                               ,[filename]
                               ,[fullFileName]
                               ,[importDate]
+                              ,[FileCreateDate]
                         FROM [planData]
                         ORDER BY importDate DESC";
 
@@ -106,7 +110,8 @@ namespace FlightPlanManager.Services
                                     Plan = rdr[9] as string,
                                     OrigFileName = rdr[10] as string,
                                     OrigFullFileName = rdr[11] as string,
-                                    ImportDate = rdr.GetDateTime(12)
+                                    ImportDate = rdr.GetDateTime(12),
+                                    FileCreateDate = rdr.IsDBNull(13) ? DateTime.MinValue : rdr.GetDateTime(13)
                                 });
                             }
                             catch
@@ -153,6 +158,7 @@ namespace FlightPlanManager.Services
                     cmd.Parameters.AddWithValue("@filename", plan.OrigFileName);
                     cmd.Parameters.AddWithValue("@fullFileName", plan.OrigFullFileName);
                     cmd.Parameters.AddWithValue("@importDate", plan.ImportDate);
+                    cmd.Parameters.AddWithValue("@fileCreateDate", plan.FileCreateDate);
 
                     cmd.CommandText = "SELECT planName FROM planData WHERE planName = @name AND filename = @filename";
                     using (var rdr = cmd.ExecuteReader())
@@ -175,7 +181,8 @@ namespace FlightPlanManager.Services
                                        plan,
                                        filename,
                                        fullFileName,
-                                       importDate)
+                                       importDate,
+                                       fileCreateDate)
                                      VALUES (
                                         @name,
                                         @type,
@@ -188,7 +195,8 @@ namespace FlightPlanManager.Services
                                         @plan,
                                         @filename,
                                         @fullFileName,
-                                        @importDate)";
+                                        @importDate,
+                                        @fileCreateDate)";
                     cmd.ExecuteNonQuery();
                     cmd.CommandText = "SELECT last_insert_rowid()";
                     object tmp = cmd.ExecuteScalar();
@@ -219,6 +227,7 @@ namespace FlightPlanManager.Services
                     cmd.Parameters.AddWithValue("@filename", plan.OrigFileName);
                     cmd.Parameters.AddWithValue("@fullFileName", plan.OrigFullFileName);
                     cmd.Parameters.AddWithValue("@importDate", plan.ImportDate);
+                    cmd.Parameters.AddWithValue("@fileCreateDate", plan.FileCreateDate);
 
                     cmd.CommandText = @"UPDATE planData SET
                                            planName = @name,
@@ -229,7 +238,8 @@ namespace FlightPlanManager.Services
                                            plan = @plan,
                                            filename = @filename,
                                            fullFileName = @fullFileName,
-                                           importDate = @importDate
+                                           importDate = @importDate,
+                                           fileCreateDate = @fileCreateDate
                                         WHERE planName = @name AND filename = @filename";
                     cmd.ExecuteNonQuery();
                     cmd.CommandText = "SELECT last_insert_rowid()";

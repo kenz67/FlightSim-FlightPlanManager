@@ -48,10 +48,9 @@ namespace FlightPlanManager.DataObjects
         public string OrigFileName { get; set; }
         public string OrigFullFileName { get; set; }
         public DateTime ImportDate { get; set; }
+        public DateTime? FileCreateDate { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
-
-#pragma warning disable S1172 // Unused method parameters should be removed
 
         private void OnPropertyChanged(object sender, string _)
         {
@@ -70,7 +69,5 @@ namespace FlightPlanManager.DataObjects
                 MessageBox.Show(txt, "Save Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-#pragma warning restore S1172 // Unused method parameters should be removed
     }
 }
