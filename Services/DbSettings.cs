@@ -30,6 +30,11 @@ namespace FlightPlanManager.Services
             return val;
         }
 
+        public static bool GetBoolSetting(string setting)
+        {
+            return bool.Parse(GetSetting(setting));
+        }
+
         public static string SaveSetting(string key, string val)
         {
             using (var connection = new SQLiteConnection($"Data Source={DbCommon.DbName}"))

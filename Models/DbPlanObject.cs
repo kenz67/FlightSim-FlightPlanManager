@@ -16,21 +16,27 @@ namespace FlightPlanManager.DataObjects
         private string _group;
         private string _notes;
 
+        private readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
         public int Id { get; set; }
         public string Name { get; set; }
         public string Type { get; set; }
         public string Departure { get; set; }
         public string Destination { get; set; }
-
-        private readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        public double Distance { get; set; }
+        public string Plan { get; set; }
+        public string OrigFileName { get; set; }
+        public string OrigFullFileName { get; set; }
+        public DateTime ImportDate { get; set; }
+        public DateTime? FileCreateDate { get; set; }
+        public string DepartureName { get; set; }
+        public string DestinationName { get; set; }
 
         public int Rating
         {
             get { return _rating; }
             set { _rating = value; OnPropertyChanged(this, nameof(Rating)); }
         }
-
-        public double Distance { get; set; }
 
         public string Group
         {
@@ -44,14 +50,7 @@ namespace FlightPlanManager.DataObjects
             set { _notes = value; OnPropertyChanged(this, nameof(Notes)); }
         }
 
-        public string Plan { get; set; }
-        public string OrigFileName { get; set; }
-        public string OrigFullFileName { get; set; }
-        public DateTime ImportDate { get; set; }
-
         public event PropertyChangedEventHandler PropertyChanged;
-
-#pragma warning disable S1172 // Unused method parameters should be removed
 
         private void OnPropertyChanged(object sender, string _)
         {
@@ -70,7 +69,5 @@ namespace FlightPlanManager.DataObjects
                 MessageBox.Show(txt, "Save Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-#pragma warning restore S1172 // Unused method parameters should be removed
     }
 }
