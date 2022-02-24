@@ -42,6 +42,11 @@ namespace FlightPlanManager.Forms
             dataGridView1.Columns["id"].Visible = false;
             dataGridView1.Columns["planDataGridViewTextBoxColumn"].Visible = false;
             dataGridView1.Columns["origFullFileNameDataGridViewTextBoxColumn"].Visible = false;
+
+            dataGridView1.Columns["groupDataGridViewTextBoxColumn"].HeaderCell.Style.Font = new Font(dataGridView1.Font, FontStyle.Bold | FontStyle.Underline);
+            dataGridView1.Columns["notesDataGridViewTextBoxColumn"].HeaderCell.Style.Font = new Font(dataGridView1.Font, FontStyle.Bold | FontStyle.Underline);
+            dataGridView1.Columns["ratingDataGridViewTextBoxColumn"].HeaderCell.Style.Font = new Font(dataGridView1.Font, FontStyle.Bold | FontStyle.Underline);
+
             dataGridView1.Columns["importDateDataGridViewTextBoxColumn"].DefaultCellStyle.Format = "yyyy-MM-dd";
             dataGridView1.Columns["fileCreateDateDataTextBoxColumn"].DefaultCellStyle.Format = "yyyy-MM-dd";
 
@@ -183,7 +188,14 @@ namespace FlightPlanManager.Forms
                                 else
                                 {
                                     DbData.OverwritePlan(plan);
-                                    duplicates.Add($"{plan.Name} from file {plan.OrigFileName}");
+                                    if (openFileDialog.FileNames.Length.Equals(1))
+                                    {
+                                        UpdateGrid();
+                                    }
+                                    else
+                                    {
+                                        duplicates.Add($"{plan.Name} from file {plan.OrigFileName}");
+                                    }
                                 }
                             }
                         }
@@ -202,9 +214,18 @@ namespace FlightPlanManager.Forms
                     if (openFileDialog.FileNames.Length > 1)
                     {
                         ShowResults(overwrite, imported, duplicates);
+                        UpdateGrid();
                     }
                 }
             }
+        }
+
+        private void UpdateGrid()
+        {
+            sortableData = DbData.GetData();
+            dataGridView1.DataSource = sortableData;
+            dataGridView1.Refresh();
+            dataGridView1.Update();
         }
 
         private void ShowResults(bool overwrite, List<string> imported, List<string> duplicates)
@@ -261,7 +282,9 @@ namespace FlightPlanManager.Forms
                 ImportDate = DateTime.Now,
                 Plan = doc.InnerXml,
                 Type = data.FlightPlan_FlightPlan.FPType ?? "VFR",
-                FileCreateDate = fileInfo.CreationTime
+                FileCreateDate = fileInfo.CreationTime,
+                DepartureName = data.FlightPlan_FlightPlan.DepartureName ?? String.Empty,
+                DestinationName = data.FlightPlan_FlightPlan.DestinationName ?? String.Empty
             };
 
             return plan;

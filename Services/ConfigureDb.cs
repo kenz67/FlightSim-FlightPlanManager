@@ -77,7 +77,9 @@ namespace FlightPlanManager.DataObjects
                     SELECT 'groupDataGridViewTextBoxColumn', 'Group', 7 UNION
                     SELECT 'origFileNameDataGridViewTextBoxColumn', 'Orig File Name', 8 UNION
                     SELECT 'notesDataGridViewTextBoxColumn', 'Notes', 9 UNION
-                    SELECT 'fileCreateDateDataTextBoxColumn', 'File Create Date', 10
+                    SELECT 'fileCreateDateDataTextBoxColumn', 'File Create Date', 10 UNION
+                    SELECT 'DestinationNameTextBoxColumn', 'Dest Name', 11 UNION
+                    SELECT 'DepartureNameTextBoxColumn', 'Dep Name', 12
                 )
                 INSERT INTO gridColumns (ColumnKey, ColumnName, DisplayOrder)
                     SELECT ColumnKey, ColumnName, DisplayOrder FROM v t1
@@ -126,13 +128,17 @@ namespace FlightPlanManager.DataObjects
                     filename TEXT,
                     fullFileName TEXT,
                     importDate DATETIME,
-                    fileCreateDate DATETIME
+                    fileCreateDate DATETIME,
+                    departureName TEXT,
+                    destinationName TEXT
                 )";
 
                 cmd.ExecuteNonQuery();
             }
 
             AddColumn(conn, "planData", "fileCreateDate");
+            AddColumn(conn, "planData", "departureName");
+            AddColumn(conn, "planData", "destinationName");
         }
 
         public void AddColumn(SQLiteConnection conn, string table, string col)
