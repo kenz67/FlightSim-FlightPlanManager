@@ -30,7 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -50,6 +49,16 @@
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dbPlanObjectBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.typeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -66,16 +75,9 @@
             this.fileCreateDateDataTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DepartureNameTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DestinationNameTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dbPlanObjectBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AuthorDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AirportCountDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.WaypointCountDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -113,21 +115,24 @@
             this.origFullFileNameDataGridViewTextBoxColumn,
             this.fileCreateDateDataTextBoxColumn,
             this.DepartureNameTextBoxColumn,
-            this.DestinationNameTextBoxColumn});
+            this.DestinationNameTextBoxColumn,
+            this.AuthorDataGridViewTextBoxColumn,
+            this.AirportCountDataGridViewTextBoxColumn,
+            this.WaypointCountDataGridViewTextBoxColumn});
             this.dataGridView1.DataSource = this.dbPlanObjectBindingSource;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.EnableHeadersVisualStyles = false;
             this.dataGridView1.Location = new System.Drawing.Point(0, 24);
             this.dataGridView1.MultiSelect = false;
             this.dataGridView1.Name = "dataGridView1";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridView1.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(800, 426);
@@ -263,6 +268,72 @@
             this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
             this.dataGridViewTextBoxColumn3.Width = 60;
             // 
+            // dataGridViewTextBoxColumn4
+            // 
+            this.dataGridViewTextBoxColumn4.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.dataGridViewTextBoxColumn4.DataPropertyName = "ImportDate";
+            this.dataGridViewTextBoxColumn4.HeaderText = "ImportDate";
+            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            this.dataGridViewTextBoxColumn4.Width = 88;
+            // 
+            // dataGridViewTextBoxColumn5
+            // 
+            this.dataGridViewTextBoxColumn5.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.dataGridViewTextBoxColumn5.DataPropertyName = "Departure";
+            this.dataGridViewTextBoxColumn5.HeaderText = "Departure";
+            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
+            this.dataGridViewTextBoxColumn5.Width = 89;
+            // 
+            // dataGridViewTextBoxColumn6
+            // 
+            this.dataGridViewTextBoxColumn6.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.dataGridViewTextBoxColumn6.DataPropertyName = "Destination";
+            this.dataGridViewTextBoxColumn6.HeaderText = "Destination";
+            this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
+            this.dataGridViewTextBoxColumn6.Width = 89;
+            // 
+            // dbPlanObjectBindingSource
+            // 
+            this.dbPlanObjectBindingSource.DataSource = typeof(FlightPlanManager.DataObjects.DbPlanObject);
+            // 
+            // dataGridViewTextBoxColumn7
+            // 
+            this.dataGridViewTextBoxColumn7.DataPropertyName = "Distance";
+            this.dataGridViewTextBoxColumn7.HeaderText = "Distance";
+            this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
+            this.dataGridViewTextBoxColumn7.Width = 88;
+            // 
+            // dataGridViewTextBoxColumn8
+            // 
+            this.dataGridViewTextBoxColumn8.DataPropertyName = "Group";
+            this.dataGridViewTextBoxColumn8.HeaderText = "Group";
+            this.dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
+            this.dataGridViewTextBoxColumn8.Width = 88;
+            // 
+            // dataGridViewTextBoxColumn9
+            // 
+            this.dataGridViewTextBoxColumn9.DataPropertyName = "OrigFileName";
+            this.dataGridViewTextBoxColumn9.HeaderText = "OrigFileName";
+            this.dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
+            // 
+            // dataGridViewTextBoxColumn10
+            // 
+            this.dataGridViewTextBoxColumn10.DataPropertyName = "Notes";
+            this.dataGridViewTextBoxColumn10.HeaderText = "Notes";
+            this.dataGridViewTextBoxColumn10.Name = "dataGridViewTextBoxColumn10";
+            // 
+            // dataGridViewTextBoxColumn11
+            // 
+            this.dataGridViewTextBoxColumn11.DataPropertyName = "Plan";
+            this.dataGridViewTextBoxColumn11.HeaderText = "Plan";
+            this.dataGridViewTextBoxColumn11.Name = "dataGridViewTextBoxColumn11";
+            // 
+            // dataGridViewTextBoxColumn12
+            // 
+            this.dataGridViewTextBoxColumn12.DataPropertyName = "OrigFullFileName";
+            this.dataGridViewTextBoxColumn12.HeaderText = "OrigFullFileName";
+            this.dataGridViewTextBoxColumn12.Name = "dataGridViewTextBoxColumn12";
+            // 
             // id
             // 
             this.id.DataPropertyName = "Id";
@@ -339,7 +410,6 @@
             // 
             this.groupDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.groupDataGridViewTextBoxColumn.DataPropertyName = "Group";
-            this.groupDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle2;
             this.groupDataGridViewTextBoxColumn.HeaderText = "Group";
             this.groupDataGridViewTextBoxColumn.Name = "groupDataGridViewTextBoxColumn";
             this.groupDataGridViewTextBoxColumn.Width = 88;
@@ -395,68 +465,28 @@
             this.DestinationNameTextBoxColumn.Name = "DestinationNameTextBoxColumn";
             this.DestinationNameTextBoxColumn.Width = 110;
             // 
-            // dbPlanObjectBindingSource
+            // AuthorDataGridViewTextBoxColumn
             // 
-            this.dbPlanObjectBindingSource.DataSource = typeof(FlightPlanManager.DataObjects.DbPlanObject);
+            this.AuthorDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.AuthorDataGridViewTextBoxColumn.DataPropertyName = "Author";
+            this.AuthorDataGridViewTextBoxColumn.HeaderText = "Author";
+            this.AuthorDataGridViewTextBoxColumn.Name = "AuthorDataGridViewTextBoxColumn";
             // 
-            // dataGridViewTextBoxColumn4
+            // AirportCountDataGridViewTextBoxColumn
             // 
-            this.dataGridViewTextBoxColumn4.DataPropertyName = "ImportDate";
-            this.dataGridViewTextBoxColumn4.HeaderText = "ImportDate";
-            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
-            this.dataGridViewTextBoxColumn4.Width = 88;
+            this.AirportCountDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.AirportCountDataGridViewTextBoxColumn.DataPropertyName = "AirportCount";
+            this.AirportCountDataGridViewTextBoxColumn.HeaderText = "Airport Count";
+            this.AirportCountDataGridViewTextBoxColumn.Name = "AirportCountDataGridViewTextBoxColumn";
+            this.AirportCountDataGridViewTextBoxColumn.Width = 75;
             // 
-            // dataGridViewTextBoxColumn5
+            // WaypointCountDataGridViewTextBoxColumn
             // 
-            this.dataGridViewTextBoxColumn5.DataPropertyName = "Departure";
-            this.dataGridViewTextBoxColumn5.HeaderText = "Departure";
-            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
-            this.dataGridViewTextBoxColumn5.Width = 89;
-            // 
-            // dataGridViewTextBoxColumn6
-            // 
-            this.dataGridViewTextBoxColumn6.DataPropertyName = "Destination";
-            this.dataGridViewTextBoxColumn6.HeaderText = "Destination";
-            this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
-            this.dataGridViewTextBoxColumn6.Width = 89;
-            // 
-            // dataGridViewTextBoxColumn7
-            // 
-            this.dataGridViewTextBoxColumn7.DataPropertyName = "Distance";
-            this.dataGridViewTextBoxColumn7.HeaderText = "Distance";
-            this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
-            this.dataGridViewTextBoxColumn7.Width = 88;
-            // 
-            // dataGridViewTextBoxColumn8
-            // 
-            this.dataGridViewTextBoxColumn8.DataPropertyName = "Group";
-            this.dataGridViewTextBoxColumn8.HeaderText = "Group";
-            this.dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
-            this.dataGridViewTextBoxColumn8.Width = 88;
-            // 
-            // dataGridViewTextBoxColumn9
-            // 
-            this.dataGridViewTextBoxColumn9.DataPropertyName = "OrigFileName";
-            this.dataGridViewTextBoxColumn9.HeaderText = "OrigFileName";
-            this.dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
-            // 
-            // dataGridViewTextBoxColumn10
-            // 
-            this.dataGridViewTextBoxColumn10.DataPropertyName = "Notes";
-            this.dataGridViewTextBoxColumn10.HeaderText = "Notes";
-            this.dataGridViewTextBoxColumn10.Name = "dataGridViewTextBoxColumn10";
-            // 
-            // dataGridViewTextBoxColumn11
-            // 
-            this.dataGridViewTextBoxColumn11.DataPropertyName = "Plan";
-            this.dataGridViewTextBoxColumn11.HeaderText = "Plan";
-            this.dataGridViewTextBoxColumn11.Name = "dataGridViewTextBoxColumn11";
-            // 
-            // dataGridViewTextBoxColumn12
-            // 
-            this.dataGridViewTextBoxColumn12.DataPropertyName = "OrigFullFileName";
-            this.dataGridViewTextBoxColumn12.HeaderText = "OrigFullFileName";
-            this.dataGridViewTextBoxColumn12.Name = "dataGridViewTextBoxColumn12";
+            this.WaypointCountDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.WaypointCountDataGridViewTextBoxColumn.DataPropertyName = "WaypointCount";
+            this.WaypointCountDataGridViewTextBoxColumn.HeaderText = "Waypoint Count";
+            this.WaypointCountDataGridViewTextBoxColumn.Name = "WaypointCountDataGridViewTextBoxColumn";
+            this.WaypointCountDataGridViewTextBoxColumn.Width = 75;
             // 
             // MainForm
             // 
@@ -524,5 +554,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn fileCreateDateDataTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn DepartureNameTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn DestinationNameTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn AuthorDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn AirportCountDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn WaypointCountDataGridViewTextBoxColumn;
     }
 }

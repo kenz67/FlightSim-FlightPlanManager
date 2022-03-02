@@ -1,11 +1,6 @@
-﻿using FlightPlanManager.Services;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Data.SQLite;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FlightPlanManager.DataObjects
 {
@@ -15,6 +10,12 @@ namespace FlightPlanManager.DataObjects
         {
             if (!File.Exists(DbCommon.DbName))
             {
+                var path = Path.GetDirectoryName(System.IO.Path.GetFullPath(DbCommon.DbName));
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
                 SQLiteConnection.CreateFile(DbCommon.DbName);
             }
 
@@ -79,7 +80,10 @@ namespace FlightPlanManager.DataObjects
                     SELECT 'notesDataGridViewTextBoxColumn', 'Notes', 9 UNION
                     SELECT 'fileCreateDateDataTextBoxColumn', 'File Create Date', 10 UNION
                     SELECT 'DestinationNameTextBoxColumn', 'Dest Name', 11 UNION
-                    SELECT 'DepartureNameTextBoxColumn', 'Dep Name', 12
+                    SELECT 'DepartureNameTextBoxColumn', 'Dep Name', 12 UNION
+                    SELECT 'AuthorDataGridViewTextBoxColumn', 'Author', 13 UNION
+                    SELECT 'AirportCountDataGridViewTextBoxColumn', 'Airport Count', 14 UNION
+                    SELECT 'WaypointCountDataGridViewTextBoxColumn', 'Waypoint Count', 15
                 )
                 INSERT INTO gridColumns (ColumnKey, ColumnName, DisplayOrder)
                     SELECT ColumnKey, ColumnName, DisplayOrder FROM v t1
@@ -92,7 +96,6 @@ namespace FlightPlanManager.DataObjects
 
         private void LoadSettingTable(SQLiteConnection conn)
         {
-            //DbSettings.SaveSetting(DbCommon.SettingsDefaultFolder, $"C:\\Users\\{Environment.UserName}\\AppData\\Local\\Packages\\Microsoft.FlightSimulator_8wekyb3d8bbwe\\LocalState");
             using (SQLiteCommand cmd = conn.CreateCommand())
             {
                 cmd.CommandText = $@"
@@ -130,7 +133,10 @@ namespace FlightPlanManager.DataObjects
                     importDate DATETIME,
                     fileCreateDate DATETIME,
                     departureName TEXT,
-                    destinationName TEXT
+                    destinationName TEXT,
+                    author TEXT,
+                    airportCnt INTEGER,
+                    waypointCnt INTEGER
                 )";
 
                 cmd.ExecuteNonQuery();
@@ -139,6 +145,9 @@ namespace FlightPlanManager.DataObjects
             AddColumn(conn, "planData", "fileCreateDate");
             AddColumn(conn, "planData", "departureName");
             AddColumn(conn, "planData", "destinationName");
+            AddColumn(conn, "planData", "author");
+            AddIntColumn(conn, "planData", "airportCnt");
+            AddIntColumn(conn, "planData", "waypointCnt");
         }
 
         public void AddColumn(SQLiteConnection conn, string table, string col)
@@ -150,6 +159,20 @@ namespace FlightPlanManager.DataObjects
                     cmd.Parameters.AddWithValue("@table", table);
                     cmd.Parameters.AddWithValue("@col", col);
                     cmd.CommandText = $"ALTER TABLE {table} ADD {col} TEXT NULL";
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void AddIntColumn(SQLiteConnection conn, string table, string col)
+        {
+            if (!CheckColumnExists(conn, table, col))
+            {
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.Parameters.AddWithValue("@table", table);
+                    cmd.Parameters.AddWithValue("@col", col);
+                    cmd.CommandText = $"ALTER TABLE {table} ADD {col} INTEGER NULL";
                     cmd.ExecuteNonQuery();
                 }
             }
