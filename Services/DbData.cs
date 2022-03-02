@@ -6,6 +6,8 @@ namespace FlightPlanManager.Services
 {
     public static class DbData
     {
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
         public static DbPlanObject GetData(int id)
         {
             var result = new DbPlanObject();
@@ -93,6 +95,9 @@ namespace FlightPlanManager.Services
                               ,[FileCreateDate]
                               ,[departureName]
                               ,[destinationName]
+                              ,[author]
+                              ,[airportCnt]
+                              ,[waypointCnt]
                         FROM [planData]
                         ORDER BY importDate DESC";
 
@@ -119,7 +124,10 @@ namespace FlightPlanManager.Services
                                     ImportDate = rdr.GetDateTime(12),
                                     FileCreateDate = rdr.IsDBNull(13) ? DateTime.MinValue : rdr.GetDateTime(13),
                                     DepartureName = rdr[14] as string ?? string.Empty,
-                                    DestinationName = rdr[15] as string ?? string.Empty
+                                    DestinationName = rdr[15] as string ?? string.Empty,
+                                    Author = rdr[16] as string ?? string.Empty,
+                                    AirportCount = rdr.IsDBNull(17) ? 0 : rdr.GetInt32(17),
+                                    WaypointCount = rdr.IsDBNull(18) ? 0 : rdr.GetInt32(18)
                                 });
                             }
                             catch (Exception ex)
@@ -135,7 +143,7 @@ namespace FlightPlanManager.Services
                                 }
                                 catch
                                 {
-                                    // just eat the error, but load the file.
+                                    Logger.Error(ex, "Reading Data");
                                 }
                             }
                         }
@@ -246,6 +254,9 @@ namespace FlightPlanManager.Services
                     cmd.Parameters.AddWithValue("@fileCreateDate", plan.FileCreateDate);
                     cmd.Parameters.AddWithValue("@departureName", plan.DepartureName);
                     cmd.Parameters.AddWithValue("@destinationName", plan.DestinationName);
+                    cmd.Parameters.AddWithValue("@author", plan.Author);
+                    cmd.Parameters.AddWithValue("@airportCount", plan.AirportCount);
+                    cmd.Parameters.AddWithValue("@waypointCount", plan.WaypointCount);
 
                     cmd.CommandText = @"UPDATE planData SET
                                            planName = @name,
@@ -259,7 +270,10 @@ namespace FlightPlanManager.Services
                                            importDate = @importDate,
                                            fileCreateDate = @fileCreateDate,
                                            departureName = @departureName,
-                                           destinationName = @destinationName
+                                           destinationName = @destinationName,
+                                           author = @author,
+                                           airportCnt = @airportCount,
+                                           waypointCnt = @waypointCount
                                         WHERE planName = @name AND filename = @filename";
                     cmd.ExecuteNonQuery();
                     cmd.CommandText = "SELECT last_insert_rowid()";
@@ -285,8 +299,9 @@ namespace FlightPlanManager.Services
                     cmd.Parameters.AddWithValue("@rating", data.Rating);
                     cmd.Parameters.AddWithValue("@group", data.Group);
                     cmd.Parameters.AddWithValue("@notes", data.Notes);
+                    cmd.Parameters.AddWithValue("@author", data.Author);
 
-                    cmd.CommandText = "UPDATE planData SET rating = @rating, groupFlownWith = @group, notes = @notes WHERE id = @id";
+                    cmd.CommandText = "UPDATE planData SET rating = @rating, groupFlownWith = @group, notes = @notes, author = @author WHERE id = @id";
                     cmd.ExecuteNonQuery();
                 }
             }

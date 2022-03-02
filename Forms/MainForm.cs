@@ -46,6 +46,7 @@ namespace FlightPlanManager.Forms
             dataGridView1.Columns["groupDataGridViewTextBoxColumn"].HeaderCell.Style.Font = new Font(dataGridView1.Font, FontStyle.Bold | FontStyle.Underline);
             dataGridView1.Columns["notesDataGridViewTextBoxColumn"].HeaderCell.Style.Font = new Font(dataGridView1.Font, FontStyle.Bold | FontStyle.Underline);
             dataGridView1.Columns["ratingDataGridViewTextBoxColumn"].HeaderCell.Style.Font = new Font(dataGridView1.Font, FontStyle.Bold | FontStyle.Underline);
+            dataGridView1.Columns["AuthorDataGridViewTextBoxColumn"].HeaderCell.Style.Font = new Font(dataGridView1.Font, FontStyle.Bold | FontStyle.Underline);
 
             dataGridView1.Columns["importDateDataGridViewTextBoxColumn"].DefaultCellStyle.Format = "yyyy-MM-dd";
             dataGridView1.Columns["fileCreateDateDataTextBoxColumn"].DefaultCellStyle.Format = "yyyy-MM-dd";
@@ -101,7 +102,18 @@ namespace FlightPlanManager.Forms
                         autoText.AutoCompleteMode = AutoCompleteMode.Suggest;
                         autoText.AutoCompleteSource = AutoCompleteSource.CustomSource;
                         AutoCompleteStringCollection DataCollection = new AutoCompleteStringCollection();
-                        AddItemsToAutoCompleteList(DataCollection, data);
+                        AddItemsToGroupAutoCompleteList(DataCollection, data);
+                        autoText.AutoCompleteCustomSource = DataCollection;
+                    }
+                }
+                else if (headerText.Equals("Author"))
+                {
+                    if (e.Control is TextBox autoText)
+                    {
+                        autoText.AutoCompleteMode = AutoCompleteMode.Suggest;
+                        autoText.AutoCompleteSource = AutoCompleteSource.CustomSource;
+                        AutoCompleteStringCollection DataCollection = new AutoCompleteStringCollection();
+                        AddItemsToAuthorAutoCompleteList(DataCollection, data);
                         autoText.AutoCompleteCustomSource = DataCollection;
                     }
                 }
@@ -112,7 +124,7 @@ namespace FlightPlanManager.Forms
             }
         }
 
-        public void AddItemsToAutoCompleteList(AutoCompleteStringCollection col, SortableBindingList<DbPlanObject> data)
+        public void AddItemsToGroupAutoCompleteList(AutoCompleteStringCollection col, SortableBindingList<DbPlanObject> data)
         {
             foreach (var plan in data)
             {
@@ -120,6 +132,18 @@ namespace FlightPlanManager.Forms
                 {
                     if (!col.Contains(plan.Group))
                         col.Add(plan.Group);
+                }
+            }
+        }
+
+        public void AddItemsToAuthorAutoCompleteList(AutoCompleteStringCollection col, SortableBindingList<DbPlanObject> data)
+        {
+            foreach (var plan in data)
+            {
+                if (plan.Author != null)
+                {
+                    if (!col.Contains(plan.Author))
+                        col.Add(plan.Author);
                 }
             }
         }
@@ -275,7 +299,6 @@ namespace FlightPlanManager.Forms
                 Destination = data.FlightPlan_FlightPlan.DestinationID ?? String.Empty,
                 Distance = Math.Round(distance * 0.000539957, 1),
                 Group = string.Empty,
-                Notes = $"{waypoints} waypt, {airports} arpt",
                 OrigFileName = fileInfo.Name,
                 OrigFullFileName = planFile,
                 Rating = 0,
@@ -284,7 +307,9 @@ namespace FlightPlanManager.Forms
                 Type = data.FlightPlan_FlightPlan.FPType ?? "VFR",
                 FileCreateDate = fileInfo.CreationTime,
                 DepartureName = data.FlightPlan_FlightPlan.DepartureName ?? String.Empty,
-                DestinationName = data.FlightPlan_FlightPlan.DestinationName ?? String.Empty
+                DestinationName = data.FlightPlan_FlightPlan.DestinationName ?? String.Empty,
+                AirportCount = airports,
+                WaypointCount = waypoints
             };
 
             return plan;

@@ -1,11 +1,7 @@
 ﻿using FlightPlanManager.Services;
 using NLog;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace FlightPlanManager.DataObjects
@@ -15,6 +11,7 @@ namespace FlightPlanManager.DataObjects
         private int _rating;
         private string _group;
         private string _notes;
+        private string _author;
 
         private readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
@@ -31,6 +28,8 @@ namespace FlightPlanManager.DataObjects
         public DateTime? FileCreateDate { get; set; }
         public string DepartureName { get; set; }
         public string DestinationName { get; set; }
+        public int AirportCount { get; set; }
+        public int WaypointCount { get; set; }
 
         public int Rating
         {
@@ -48,6 +47,12 @@ namespace FlightPlanManager.DataObjects
         {
             get { return _notes; }
             set { _notes = value; OnPropertyChanged(this, nameof(Notes)); }
+        }
+
+        public string Author
+        {
+            get { return _author; }
+            set { _author = value; OnPropertyChanged(this, nameof(Author)); }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
