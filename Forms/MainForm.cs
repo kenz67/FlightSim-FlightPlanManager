@@ -3,15 +3,12 @@ using FlightPlanManager.Models;
 using FlightPlanManager.Services;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Data.Common;
 using System.Device.Location;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
@@ -367,10 +364,13 @@ namespace FlightPlanManager.Forms
 
         private void DataGridView1_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
         {
-            DataGridView1_Delete(sender, e);
+            if (!DataGridView1_Delete(sender, e))
+            {
+                e.Cancel = true;
+            }
         }
 
-        private void DataGridView1_Delete(object sender, EventArgs e)
+        private bool DataGridView1_Delete(object _, EventArgs __)
         {
             Int32 rowToDelete = dataGridView1.Rows.GetFirstRow(DataGridViewElementStates.Selected);
             if (MessageBox.Show($"Are you sure you want to delete \"{dataGridView1.Rows[rowToDelete].Cells["nameDataGridViewTextBoxColumn"].Value}\" plan?", "Deleting", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
@@ -379,6 +379,11 @@ namespace FlightPlanManager.Forms
                 DbData.Delete((int)dataGridView1.Rows[rowToDelete].Cells["id"].Value);
                 dataGridView1.Rows.RemoveAt(rowToDelete);
                 dataGridView1.ClearSelection();
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -412,7 +417,7 @@ namespace FlightPlanManager.Forms
             if (dialog.ShowDialog().Equals(DialogResult.OK))
             {
                 var cols = new List<DbGridColumn>();
-                foreach (DbGridColumn item in dialog.Availble.Items)
+                foreach (DbGridColumn item in dialog.Available.Items)
                 {
                     cols.Add(new DbGridColumn { ColumnKey = item.ColumnKey, ColumnName = item.ColumnName, DisplayOrder = -1 });
                 }

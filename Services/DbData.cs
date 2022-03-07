@@ -45,22 +45,22 @@ namespace FlightPlanManager.Services
                         {
                             result = new DbPlanObject
                             {
-                                Id = rdr.GetInt32(0),
-                                Name = (string)rdr[1] ?? string.Empty,
-                                Type = (string)rdr[2] ?? string.Empty,
-                                Departure = (string)rdr[3] ?? string.Empty,
-                                Destination = (string)rdr[4] ?? string.Empty,
-                                Distance = (double)rdr.GetDecimal(5),
-                                Rating = rdr.GetInt32(6),
-                                Group = (string)rdr[7] ?? string.Empty,
-                                Notes = (string)rdr[8] ?? string.Empty,
-                                Plan = (string)rdr[9] ?? string.Empty,
-                                OrigFileName = (string)rdr[10] ?? string.Empty,
-                                OrigFullFileName = (string)rdr[11] ?? string.Empty,
-                                ImportDate = rdr.GetDateTime(12),
+                                Id = rdr.IsDBNull(0) ? 0 : rdr.GetInt32(0),
+                                Name = rdr.IsDBNull(1) ? string.Empty : rdr.GetString(1),
+                                Type = rdr.IsDBNull(2) ? string.Empty : rdr.GetString(2),
+                                Departure = rdr.IsDBNull(3) ? string.Empty : rdr.GetString(3),
+                                Destination = rdr.IsDBNull(4) ? string.Empty : rdr.GetString(4),
+                                Distance = rdr.IsDBNull(5) ? 0 : (double)rdr.GetDecimal(5),
+                                Rating = rdr.IsDBNull(6) ? 0 : rdr.GetInt32(6),
+                                Group = rdr.IsDBNull(7) ? string.Empty : rdr.GetString(7),
+                                Notes = rdr.IsDBNull(8) ? string.Empty : rdr.GetString(8),
+                                Plan = rdr.IsDBNull(9) ? string.Empty : rdr.GetString(9),
+                                OrigFileName = rdr.IsDBNull(10) ? string.Empty : rdr.GetString(10),
+                                OrigFullFileName = rdr.IsDBNull(11) ? string.Empty : rdr.GetString(11),
+                                ImportDate = rdr.IsDBNull(12) ? DateTime.MinValue : rdr.GetDateTime(12),
                                 FileCreateDate = rdr.IsDBNull(13) ? DateTime.MinValue : rdr.GetDateTime(13),
-                                DepartureName = (string)rdr[14] ?? string.Empty,
-                                DestinationName = (string)rdr[15] ?? string.Empty
+                                DepartureName = rdr.IsDBNull(14) ? string.Empty : rdr.GetString(14),
+                                DestinationName = rdr.IsDBNull(15) ? string.Empty : rdr.GetString(15)
                             };
                         }
                     }
@@ -317,7 +317,7 @@ namespace FlightPlanManager.Services
                 {
                     cmd.Parameters.AddWithValue("@id", id);
 
-                    cmd.CommandText = "DELETE FROM planData  WHERE id = @id";
+                    cmd.CommandText = "DELETE FROM planData WHERE id = @id";
                     cmd.ExecuteNonQuery();
                 }
             }

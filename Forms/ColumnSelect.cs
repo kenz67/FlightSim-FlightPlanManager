@@ -1,23 +1,20 @@
 ﻿using FlightPlanManager.Models;
 using FlightPlanManager.Services;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Data.Common;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.ListBox;
 
 namespace FlightPlanManager.Forms
 {
     public partial class ColumnSelect : Form
     {
-        public ListBox Availble { get { return listBoxAvailable; } }
-        public ListBox Selected { get { return listBoxSelected; } }
+        public ListBox Available
+        { get { return listBoxAvailable; } }
+
+        public ListBox Selected
+        { get { return listBoxSelected; } }
 
         public ColumnSelect()
         {
@@ -88,7 +85,7 @@ namespace FlightPlanManager.Forms
             this.Close();
         }
 
-        private void buttonCancel_Click(object sender, EventArgs e)
+        private void ButtonCancel_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
