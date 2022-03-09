@@ -1,6 +1,8 @@
 ﻿using FlightPlanManager.DataObjects;
 using System;
+using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Windows.Forms;
 
 namespace FlightPlanManager.Services
 {
@@ -69,9 +71,9 @@ namespace FlightPlanManager.Services
             return result;
         }
 
-        public static SortableBindingList<DbPlanObject> GetData()
+        public static List<DbPlanObject> GetData()
         {
-            var result = new SortableBindingList<DbPlanObject>();
+            var result = new List<DbPlanObject>();
             using (var connection = new SQLiteConnection($"Data Source={DbCommon.DbName}"))
             {
                 connection.Open();
