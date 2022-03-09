@@ -45,9 +45,6 @@ namespace FlightPlanManager.Forms
             planDataGridViewTextBoxColumn.Visible = false;
             origFileNameDataGridViewTextBoxColumn.Visible = false;
 
-            //dataGridView1.Columns["planDataGridViewTextBoxColumn"].Visible = false;
-            //dataGridView1.Columns["origFullFileNameDataGridViewTextBoxColumn"].Visible = false;
-
             groupDataGridViewTextBoxColumn.HeaderCell.Style.Font = new Font(dataGridView1.Font, FontStyle.Bold | FontStyle.Underline);
             notesDataGridViewTextBoxColumn.HeaderCell.Style.Font = new Font(dataGridView1.Font, FontStyle.Bold | FontStyle.Underline);
             ratingDataGridViewTextBoxColumn.HeaderCell.Style.Font = new Font(dataGridView1.Font, FontStyle.Bold | FontStyle.Underline);
@@ -306,7 +303,6 @@ namespace FlightPlanManager.Forms
             bs.DataSource = sortableData.ToDataTable();
             dataGridView1.DataSource = bs;
 
-            dataGridView1.DataSource = sortableData;
             dataGridView1.Refresh();
             dataGridView1.Update();
         }
@@ -361,10 +357,10 @@ namespace FlightPlanManager.Forms
                 OrigFileName = fileInfo.Name,
                 OrigFullFileName = planFile,
                 Rating = 0,
-                ImportDate = DateTime.Now,
+                ImportDate = DateTime.Now.Date,
                 Plan = doc.InnerXml,
                 Type = data.FlightPlan_FlightPlan.FPType ?? "VFR",
-                FileCreateDate = fileInfo.CreationTime,
+                FileCreateDate = fileInfo.CreationTime.Date,
                 DepartureName = data.FlightPlan_FlightPlan.DepartureName ?? String.Empty,
                 DestinationName = data.FlightPlan_FlightPlan.DestinationName ?? String.Empty,
                 AirportCount = airports,
