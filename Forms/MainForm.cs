@@ -1,4 +1,5 @@
-﻿using FlightPlanManager.DataObjects;
+﻿using DataGridViewAutoFilter;
+using FlightPlanManager.DataObjects;
 using FlightPlanManager.Models;
 using FlightPlanManager.Services;
 using MoreLinq;
@@ -115,6 +116,22 @@ namespace FlightPlanManager.Forms
             DbSettings.SaveSetting(DbCommon.SettingsWindowPosition, String.Format("{0},{1},{2},{3},{4}",
                 (int)this.WindowState,
                 rect.Left, rect.Top, rect.Width, rect.Height));
+        }
+
+        private void DataGridView_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            string filterStatus = DataGridViewAutoFilterColumnHeaderCell.GetFilterStatus(dataGridView1);
+            if (string.IsNullOrEmpty(filterStatus))
+            {
+                ShowAllLabel.Visible = false;
+                FilterStatusLabel.Visible = false;
+            }
+            else
+            {
+                ShowAllLabel.Visible = true;
+                FilterStatusLabel.Visible = true;
+                FilterStatusLabel.Text = filterStatus;
+            }
         }
 
         private void DataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
@@ -274,6 +291,12 @@ namespace FlightPlanManager.Forms
                     UpdateGrid();
                 }
             }
+        }
+
+        private void ShowAllLabel_Click(object sender, EventArgs e)
+        {
+            DataGridViewAutoFilterTextBoxColumn.RemoveFilter(dataGridView1);
+            DataGridViewAutoFilterStarRatingColumn.RemoveFilter(dataGridView1);
         }
 
         private void UpdateGrid()
