@@ -20,31 +20,15 @@ namespace DataGridViewAutoFilter
     /// </summary>
     public class DataGridViewAutoFilterColumnHeaderCell : DataGridViewColumnHeaderCell
     {
-        /// <summary>
-        /// The ListBox used for all drop-down lists.
-        /// </summary>
-        private static FilterListBox dropDownListBox = new FilterListBox();
+        private static FilterListBox dropDownListBox = new FilterListBox();         // The ListBox used for all drop-down lists.
+        private OrderedDictionary filters = new OrderedDictionary();                // A list of filters available for the owning column stored as
+        private string selectedFilterValue = string.Empty;                          // The drop-down list filter value currently in effect for the owning column.
+        private string currentColumnFilter = string.Empty;                          // The complete filter string currently in effect for the owning column.
+        private bool filtered;                                                      // Indicates whether the DataGridView is currently filtered by the owning column.
 
-        /// <summary>
-        /// A list of filters available for the owning column stored as
-        /// formatted and unformatted string values.
-        /// </summary>
-        private OrderedDictionary filters = new OrderedDictionary();
-
-        /// <summary>
-        /// The drop-down list filter value currently in effect for the owning column.
-        /// </summary>
-        private string selectedFilterValue = string.Empty;
-
-        /// <summary>
-        /// The complete filter string currently in effect for the owning column.
-        /// </summary>
-        private string currentColumnFilter = string.Empty;
-
-        /// <summary>
-        /// Indicates whether the DataGridView is currently filtered by the owning column.
-        /// </summary>
-        private bool filtered;
+        public DataGridViewAutoFilterColumnHeaderCell()
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the DataGridViewColumnHeaderCell
@@ -80,14 +64,6 @@ namespace DataGridViewAutoFilter
         }
 
         /// <summary>
-        /// Initializes a new instance of the DataGridViewColumnHeaderCell
-        /// class.
-        /// </summary>
-        public DataGridViewAutoFilterColumnHeaderCell()
-        {
-        }
-
-        /// <summary>
         /// Creates an exact copy of this cell.
         /// </summary>
         /// <returns>An object that represents the cloned DataGridViewAutoFilterColumnHeaderCell.</returns>
@@ -109,8 +85,7 @@ namespace DataGridViewAutoFilter
                 return;
             }
 
-            // Disable sorting and filtering for columns that can't make
-            // effective use of them.
+            // Disable sorting and filtering for columns that can't make effective use of them.
             if (OwningColumn != null)
             {
                 switch (OwningColumn)
@@ -134,10 +109,7 @@ namespace DataGridViewAutoFilter
                 }
             }
 
-            // Confirm that the data source meets requirements.
             VerifyDataSource();
-
-            // Add handlers to DataGridView events.
             HandleDataGridViewEvents();
 
             // Initialize the drop-down button bounds so that any initial

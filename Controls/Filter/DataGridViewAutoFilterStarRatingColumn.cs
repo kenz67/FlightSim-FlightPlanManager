@@ -14,9 +14,6 @@ namespace DataGridViewAutoFilter
     /// </summary>
     public class DataGridViewAutoFilterStarRatingColumn : DataGridViewColumn
     {
-        /// <summary>
-        /// Initializes a new instance of the DataGridViewAutoFilterTextBoxColumn class.
-        /// </summary>
         public DataGridViewAutoFilterStarRatingColumn(DataGridViewCell cellTemplate) : base(cellTemplate)
         {
             base.DefaultHeaderCellType = typeof(DataGridViewAutoFilterColumnHeaderCell);
@@ -25,12 +22,6 @@ namespace DataGridViewAutoFilter
 
         #region public properties that hide inherited, non-virtual properties: DefaultHeaderCellType and SortMode
 
-        /// <summary>
-        /// Returns the AutoFilter header cell type. This property hides the
-        /// non-virtual DefaultHeaderCellType property inherited from the
-        /// DataGridViewBand class. The inherited property is set in the
-        /// DataGridViewAutoFilterTextBoxColumn constructor.
-        /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never), Browsable(false),
         DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new Type DefaultHeaderCellType
@@ -79,22 +70,22 @@ namespace DataGridViewAutoFilter
         /// <summary>
         /// Gets or sets a value indicating whether filtering is enabled for this column.
         /// </summary>
-        [DefaultValue(true)]
-        public bool FilteringEnabled
-        {
-            get
-            {
-                // Return the header-cell value.
-                return ((DataGridViewAutoFilterColumnHeaderCell)HeaderCell)
-                    .FilteringEnabled;
-            }
-            set
-            {
-                // Set the header-cell property.
-                ((DataGridViewAutoFilterColumnHeaderCell)HeaderCell)
-                    .FilteringEnabled = value;
-            }
-        }
+        //[DefaultValue(true)]
+        //public bool FilteringEnabled
+        //{
+        //    get
+        //    {
+        //        // Return the header-cell value.
+        //        return ((DataGridViewAutoFilterColumnHeaderCell)HeaderCell)
+        //            .FilteringEnabled;
+        //    }
+        //    set
+        //    {
+        //        // Set the header-cell property.
+        //        ((DataGridViewAutoFilterColumnHeaderCell)HeaderCell)
+        //            .FilteringEnabled = value;
+        //    }
+        //}
 
         /// <summary>
         /// Gets or sets a value indicating whether automatic sorting is enabled for this column.

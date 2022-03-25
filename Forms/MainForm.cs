@@ -305,6 +305,11 @@ namespace FlightPlanManager.Forms
 
             dataGridView1.Refresh();
             dataGridView1.Update();
+
+            //sortableData = DbData.GetData();
+            //dataGridView1.DataSource = sortableData;
+            //dataGridView1.Refresh();
+            //dataGridView1.Update();
         }
 
         private void ShowResults(bool overwrite, List<string> imported, List<string> duplicates)

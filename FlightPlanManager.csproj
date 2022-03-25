@@ -102,7 +102,6 @@
     <Compile Include="Controls\Filter\DataGridViewAutoFilterStarRatingColumn.cs" />
     <Compile Include="Controls\Filter\DataGridViewAutoFilterTextBoxColumn.cs" />
     <Compile Include="Controls\DataGridViewRatingColumn.cs" />
-    <Compile Include="Controls\Filter\LanguageHandler.cs" />
     <Compile Include="Forms\ColumnSelect.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -179,7 +178,6 @@
     </None>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\FlightPlanManager.DataObjects.DbPlanObject.datasource" />
-    <None Include="Properties\DataSources\FlightPlanManager.Services.PlanObject.datasource" />
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>

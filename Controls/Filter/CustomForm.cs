@@ -85,8 +85,6 @@ namespace DataGridViewAutoFilter
 
         private void InitializeComponent()
         {
-            LanguageHandler.handler.CheckUserChoice();
-
             labelField = new Label();
             comboBoxOperator = new ComboBox();
             textValue = new TextBox();
@@ -119,14 +117,6 @@ namespace DataGridViewAutoFilter
                 "LessThanEquals",
                 "Contains",
                 "NotContains"
-            //LanguageHandler.resourceManager.GetString("operatorEquals"),
-            //LanguageHandler.resourceManager.GetString("operatorNotEquals"),
-            //LanguageHandler.resourceManager.GetString("operatorGreaterThan"),
-            //LanguageHandler.resourceManager.GetString("operatorGreaterThanEquals"),
-            //LanguageHandler.resourceManager.GetString("operatorLessThan"),
-            //LanguageHandler.resourceManager.GetString("operatorLessThanEquals"),
-            //LanguageHandler.resourceManager.GetString("operatorContains"),
-            //LanguageHandler.resourceManager.GetString("operatorNotContains")
             });
             comboBoxOperator.Location = new Point(14, 48);
             comboBoxOperator.Name = "comboBoxOperator";
@@ -183,26 +173,6 @@ namespace DataGridViewAutoFilter
         }
 
         private void CancelButton_Click(object sender, EventArgs e) => Close();
-
-        private void LanguageSelector_SelectionChangeCommitted(object sender, EventArgs e)
-        {
-            switch (languageSelector.SelectedIndex)
-            {
-                case 0: LanguageHandler.userChoice = "ar"; break;
-                case 1: LanguageHandler.userChoice = "ur"; break;
-                case 2: LanguageHandler.userChoice = "es"; break;
-                case 3: LanguageHandler.userChoice = "ja"; break;
-                case 4: LanguageHandler.userChoice = "zh"; break;
-                case 5: LanguageHandler.userChoice = "en"; break;
-                case 6: LanguageHandler.userChoice = "ru"; break;
-            }
-
-            //Properties.Settings.Default.Language = LanguageHandler.userChoice;
-            //Properties.Settings.Default.Save();
-
-            //_ = new LanguageDialog().ShowDialog();
-            Close();
-        }
 
         protected override void Dispose(bool disposing)
         {
