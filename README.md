@@ -7,6 +7,7 @@ Flight Plan Manager
 ## Features
 
 - Import and save flight plans
+- Filter flight plans
 - View map of plan
 - Rate flight plans
 - Get type of flight plan (VFR/IFR)

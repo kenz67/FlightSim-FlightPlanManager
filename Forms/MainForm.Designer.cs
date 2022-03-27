@@ -548,7 +548,7 @@
             this.WaypointCountDataGridViewTextBoxColumn.HeaderText = "Waypoint Count";
             this.WaypointCountDataGridViewTextBoxColumn.Name = "WaypointCountDataGridViewTextBoxColumn";
             this.WaypointCountDataGridViewTextBoxColumn.ReadOnly = true;
-            this.WaypointCountDataGridViewTextBoxColumn.Width = 75;
+            this.WaypointCountDataGridViewTextBoxColumn.Width = 80;
             // 
             // MainForm
             // 

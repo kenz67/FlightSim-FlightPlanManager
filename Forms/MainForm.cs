@@ -38,8 +38,10 @@ namespace FlightPlanManager.Forms
 
             sortableData = DbData.GetData();
 
-            var bs = new BindingSource();
-            bs.DataSource = sortableData.ToDataTable();
+            var bs = new BindingSource
+            {
+                DataSource = sortableData.ToDataTable()
+            };
             dataGridView1.DataSource = bs;
 
             dataGridView1.Columns["id"].Visible = false;
@@ -92,26 +94,26 @@ namespace FlightPlanManager.Forms
 
         private void EnableGridFilter(bool value)
         {
-            nameDataGridViewTextBoxColumn.FilteringEnabled = true;
-            typeDataGridViewTextBoxColumn.FilteringEnabled = true;
-            importDateDataGridViewTextBoxColumn.FilteringEnabled = true;
-            departureDataGridViewTextBoxColumn.FilteringEnabled = true;
-            destinationDataGridViewTextBoxColumn.FilteringEnabled = true;
+            nameDataGridViewTextBoxColumn.FilteringEnabled = value;
+            typeDataGridViewTextBoxColumn.FilteringEnabled = value;
+            importDateDataGridViewTextBoxColumn.FilteringEnabled = value;
+            departureDataGridViewTextBoxColumn.FilteringEnabled = value;
+            destinationDataGridViewTextBoxColumn.FilteringEnabled = value;
             ratingDataGridViewTextBoxColumn = new FlightPlanManager.Controls.DataGridViewRatingColumn();
-            distanceDataGridViewTextBoxColumn.FilteringEnabled = true;
-            groupDataGridViewTextBoxColumn.FilteringEnabled = true;
-            origFileNameDataGridViewTextBoxColumn.FilteringEnabled = true;
-            notesDataGridViewTextBoxColumn.FilteringEnabled = true;
+            distanceDataGridViewTextBoxColumn.FilteringEnabled = value;
+            groupDataGridViewTextBoxColumn.FilteringEnabled = value;
+            origFileNameDataGridViewTextBoxColumn.FilteringEnabled = value;
+            notesDataGridViewTextBoxColumn.FilteringEnabled = value;
             //planDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             //origFullFileNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            fileCreateDateDataTextBoxColumn.FilteringEnabled = true;
-            DepartureNameTextBoxColumn.FilteringEnabled = true;
-            DestinationNameTextBoxColumn.FilteringEnabled = true;
-            AuthorDataGridViewTextBoxColumn.FilteringEnabled = true;
-            AirportCountDataGridViewTextBoxColumn.FilteringEnabled = true;
-            WaypointCountDataGridViewTextBoxColumn.FilteringEnabled = true;
+            fileCreateDateDataTextBoxColumn.FilteringEnabled = value;
+            DepartureNameTextBoxColumn.FilteringEnabled = value;
+            DestinationNameTextBoxColumn.FilteringEnabled = value;
+            AuthorDataGridViewTextBoxColumn.FilteringEnabled = value;
+            AirportCountDataGridViewTextBoxColumn.FilteringEnabled = value;
+            WaypointCountDataGridViewTextBoxColumn.FilteringEnabled = value;
 
-            WaypointCountDataGridViewTextBoxColumn.FilteringEnabled = true;
+            WaypointCountDataGridViewTextBoxColumn.FilteringEnabled = value;
         }
 
         private void RestoreWindowPosition()
@@ -328,8 +330,10 @@ namespace FlightPlanManager.Forms
         private void UpdateGrid()
         {
             sortableData = DbData.GetData();
-            var bs = new BindingSource();
-            bs.DataSource = sortableData.ToDataTable();
+            var bs = new BindingSource
+            {
+                DataSource = sortableData.ToDataTable()
+            };
             dataGridView1.DataSource = bs;
 
             dataGridView1.Refresh();

@@ -20,8 +20,8 @@ namespace DataGridViewAutoFilter
     /// </summary>
     public class DataGridViewAutoFilterColumnHeaderCell : DataGridViewColumnHeaderCell
     {
-        private static FilterListBox dropDownListBox = new FilterListBox();         // The ListBox used for all drop-down lists.
-        private OrderedDictionary filters = new OrderedDictionary();                // A list of filters available for the owning column stored as
+        private static readonly FilterListBox dropDownListBox = new FilterListBox();         // The ListBox used for all drop-down lists.
+        private readonly OrderedDictionary filters = new OrderedDictionary();                // A list of filters available for the owning column stored as
         private string selectedFilterValue = string.Empty;                          // The drop-down list filter value currently in effect for the owning column.
         private string currentColumnFilter = string.Empty;                          // The complete filter string currently in effect for the owning column.
         private bool filtered;                                                      // Indicates whether the DataGridView is currently filtered by the owning column.
@@ -133,7 +133,7 @@ namespace DataGridViewAutoFilter
             }
 
             // Throw an exception if the data source is not a BindingSource.
-            if (!(DataGridView.DataSource is BindingSource data))
+            if (!(DataGridView.DataSource is BindingSource))
             {
                 throw new NotSupportedException(
                     "The DataSource property of the containing DataGridView control " +
@@ -503,8 +503,7 @@ namespace DataGridViewAutoFilter
             Debug.Assert(DataGridView != null && OwningColumn != null, "DataGridView or OwningColumn is null");
 
             // Continue only if the data source supports sorting.
-            IBindingList sortList = DataGridView.DataSource as IBindingList;
-            if (sortList == null ||
+            if (!(DataGridView.DataSource is IBindingList sortList) ||
                 !sortList.SupportsSorting ||
                 !AutomaticSortingEnabled)
             {
@@ -610,9 +609,7 @@ namespace DataGridViewAutoFilter
             // initializing dropDownListBoxHeight to account for the
             // ListBox borders.
             int dropDownListBoxHeight = 2;
-            int currentWidth = 0;
             int dropDownListBoxWidth = 0;
-            int dropDownListBoxLeft = 0;
 
             // For each formatted value in the filters dictionary Keys collection,
             // add its height to dropDownListBoxHeight and, if it is wider than
@@ -624,7 +621,7 @@ namespace DataGridViewAutoFilter
                     SizeF stringSizeF = graphics.MeasureString(
                         filter, dropDownListBox.Font);
                     dropDownListBoxHeight += (int)stringSizeF.Height;
-                    currentWidth = (int)stringSizeF.Width;
+                    int currentWidth = (int)stringSizeF.Width;
                     if (dropDownListBoxWidth < currentWidth)
                     {
                         dropDownListBoxWidth = currentWidth;
@@ -648,6 +645,7 @@ namespace DataGridViewAutoFilter
                 dropDownListBoxWidth += SystemInformation.VerticalScrollBarWidth;
             }
 
+            int dropDownListBoxLeft;
             // Calculate the ideal location of the left edge of dropDownListBox
             // based on the location of the drop-down button and taking the
             // RightToLeft property value into consideration.
@@ -1079,8 +1077,6 @@ namespace DataGridViewAutoFilter
                 return;
             }
 
-            // Declare a variable to store the filter string for this column.
-            string newColumnFilter = null;
 
             // Store the column name in a form acceptable to the Filter property,
             // using a backslash to escape any closing square brackets.
@@ -1104,6 +1100,9 @@ namespace DataGridViewAutoFilter
                 }
             }
 
+
+            // Declare a variable to store the filter string for this column.
+            string newColumnFilter;
             // Determine the column filter string based on the user selection.
             // For (Blanks) and (NonBlanks), the filter string determines whether
             // the column value is null or an empty string. Otherwise, the filter
@@ -1144,7 +1143,7 @@ namespace DataGridViewAutoFilter
             {
                 data.Filter = newFilter;
             }
-            catch (InvalidExpressionException ex)
+            catch
             {
                 //throw new NotSupportedException("Invalid expression: " + newFilter, ex);
                 MessageBox.Show("Invalid expression: " + newFilter);
@@ -1348,7 +1347,7 @@ namespace DataGridViewAutoFilter
             int topOffset = visualStylesEnabled ? 4 : 1;
             int top = cellBounds.Bottom - buttonEdgeLength - topOffset;
             int leftOffset = visualStylesEnabled ? 3 : 1;
-            int left = 0;
+            int left;
             if (DataGridView.RightToLeft == RightToLeft.No)
             {
                 left = cellBounds.Right - buttonEdgeLength - leftOffset;
