@@ -29,6 +29,7 @@ namespace FlightPlanManager.Forms
             InitializeComponent();
             this.Load += this.MainForm_Load;
             this.dataGridView1.ContextMenuStrip = this.contextMenuStrip1;
+            this.dataGridView1.CellValueChanged += this.DataGridView1_CellValueChanged;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -68,6 +69,25 @@ namespace FlightPlanManager.Forms
             this.FormClosing += AppClosing;
 
             RestoreWindowPosition();
+        }
+
+        private void DataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            var i = e.RowIndex;
+            var sData = sortableData.Find(s => s.Id.Equals((int)dataGridView1.Rows[i].Cells["id"].Value));
+
+            if (dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.Equals(DBNull.Value))
+                dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = string.Empty;
+
+            switch (dataGridView1.Columns[e.ColumnIndex].HeaderText)
+            {
+                case "Author": sData.Author = (string)dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value ?? String.Empty; break;
+                case "Group": sData.Group = (string)dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value ?? String.Empty; break;
+                case "Notes": sData.Notes = (string)dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value ?? String.Empty; break;
+                case "Rating": sData.Rating = (int)dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value; break;
+            }
+
+            DbData.Update(sData);
         }
 
         private void EnableGridFilter(bool value)
@@ -146,7 +166,7 @@ namespace FlightPlanManager.Forms
                         autoText.AutoCompleteMode = AutoCompleteMode.Suggest;
                         autoText.AutoCompleteSource = AutoCompleteSource.CustomSource;
                         AutoCompleteStringCollection DataCollection = new AutoCompleteStringCollection();
-                        AddItemsToGroupAutoCompleteList(DataCollection, data);
+                        AddItemsTopAutoCompleteList(DataCollection, DbData.GetDistinct("groupFlownWith"));
                         autoText.AutoCompleteCustomSource = DataCollection;
                     }
                 }
@@ -157,7 +177,7 @@ namespace FlightPlanManager.Forms
                         autoText.AutoCompleteMode = AutoCompleteMode.Suggest;
                         autoText.AutoCompleteSource = AutoCompleteSource.CustomSource;
                         AutoCompleteStringCollection DataCollection = new AutoCompleteStringCollection();
-                        AddItemsToAuthorAutoCompleteList(DataCollection, data);
+                        AddItemsTopAutoCompleteList(DataCollection, DbData.GetDistinct("author"));
                         autoText.AutoCompleteCustomSource = DataCollection;
                     }
                 }
@@ -165,6 +185,15 @@ namespace FlightPlanManager.Forms
             catch (Exception ex)
             {
                 Logger.Error(ex, "Auto Complete");
+            }
+        }
+
+        public void AddItemsTopAutoCompleteList(AutoCompleteStringCollection col, List<string> data)
+        {
+            foreach (var s in data)
+            {
+                if (!string.IsNullOrEmpty(s) && !col.Contains(s))
+                    col.Add(s);
             }
         }
 

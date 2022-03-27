@@ -32,25 +32,6 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.nameDataGridViewTextBoxColumn = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
-            this.typeDataGridViewTextBoxColumn = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
-            this.importDateDataGridViewTextBoxColumn = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
-            this.departureDataGridViewTextBoxColumn = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
-            this.destinationDataGridViewTextBoxColumn = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
-            this.ratingDataGridViewTextBoxColumn = new FlightPlanManager.Controls.DataGridViewRatingColumn();
-            this.distanceDataGridViewTextBoxColumn = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
-            this.groupDataGridViewTextBoxColumn = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
-            this.origFileNameDataGridViewTextBoxColumn = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
-            this.notesDataGridViewTextBoxColumn = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
-            this.planDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.origFullFileNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.fileCreateDateDataTextBoxColumn = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
-            this.DepartureNameTextBoxColumn = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
-            this.DestinationNameTextBoxColumn = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
-            this.AuthorDataGridViewTextBoxColumn = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
-            this.AirportCountDataGridViewTextBoxColumn = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
-            this.WaypointCountDataGridViewTextBoxColumn = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
             this.dbPlanObjectBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -81,6 +62,25 @@
             this.dataGridViewTextBoxColumn11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.statusStrip2 = new System.Windows.Forms.StatusStrip();
+            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.nameDataGridViewTextBoxColumn = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
+            this.typeDataGridViewTextBoxColumn = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
+            this.importDateDataGridViewTextBoxColumn = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
+            this.departureDataGridViewTextBoxColumn = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
+            this.destinationDataGridViewTextBoxColumn = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
+            this.ratingDataGridViewTextBoxColumn = new FlightPlanManager.Controls.DataGridViewRatingColumn();
+            this.distanceDataGridViewTextBoxColumn = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
+            this.groupDataGridViewTextBoxColumn = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
+            this.origFileNameDataGridViewTextBoxColumn = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
+            this.notesDataGridViewTextBoxColumn = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
+            this.planDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.origFullFileNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.fileCreateDateDataTextBoxColumn = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
+            this.DepartureNameTextBoxColumn = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
+            this.DestinationNameTextBoxColumn = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
+            this.AuthorDataGridViewTextBoxColumn = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
+            this.AirportCountDataGridViewTextBoxColumn = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
+            this.WaypointCountDataGridViewTextBoxColumn = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dbPlanObjectBindingSource)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -142,175 +142,6 @@
             this.dataGridView1.Size = new System.Drawing.Size(800, 404);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.DataGridView_DataBindingComplete);
-            // 
-            // id
-            // 
-            this.id.DataPropertyName = "Id";
-            this.id.HeaderText = "Id";
-            this.id.Name = "id";
-            // 
-            // nameDataGridViewTextBoxColumn
-            // 
-            this.nameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
-            this.nameDataGridViewTextBoxColumn.FilteringEnabled = false;
-            this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
-            this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
-            this.nameDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // typeDataGridViewTextBoxColumn
-            // 
-            this.typeDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.typeDataGridViewTextBoxColumn.DataPropertyName = "Type";
-            this.typeDataGridViewTextBoxColumn.FilteringEnabled = false;
-            this.typeDataGridViewTextBoxColumn.HeaderText = "Type";
-            this.typeDataGridViewTextBoxColumn.Name = "typeDataGridViewTextBoxColumn";
-            this.typeDataGridViewTextBoxColumn.ReadOnly = true;
-            this.typeDataGridViewTextBoxColumn.Width = 60;
-            // 
-            // importDateDataGridViewTextBoxColumn
-            // 
-            this.importDateDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.importDateDataGridViewTextBoxColumn.DataPropertyName = "ImportDate";
-            this.importDateDataGridViewTextBoxColumn.FilteringEnabled = false;
-            this.importDateDataGridViewTextBoxColumn.HeaderText = "Import Date";
-            this.importDateDataGridViewTextBoxColumn.Name = "importDateDataGridViewTextBoxColumn";
-            this.importDateDataGridViewTextBoxColumn.ReadOnly = true;
-            this.importDateDataGridViewTextBoxColumn.Width = 88;
-            // 
-            // departureDataGridViewTextBoxColumn
-            // 
-            this.departureDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.departureDataGridViewTextBoxColumn.DataPropertyName = "Departure";
-            this.departureDataGridViewTextBoxColumn.FilteringEnabled = false;
-            this.departureDataGridViewTextBoxColumn.HeaderText = "Departure";
-            this.departureDataGridViewTextBoxColumn.Name = "departureDataGridViewTextBoxColumn";
-            this.departureDataGridViewTextBoxColumn.ReadOnly = true;
-            this.departureDataGridViewTextBoxColumn.Width = 89;
-            // 
-            // destinationDataGridViewTextBoxColumn
-            // 
-            this.destinationDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.destinationDataGridViewTextBoxColumn.DataPropertyName = "Destination";
-            this.destinationDataGridViewTextBoxColumn.FilteringEnabled = false;
-            this.destinationDataGridViewTextBoxColumn.HeaderText = "Destination";
-            this.destinationDataGridViewTextBoxColumn.Name = "destinationDataGridViewTextBoxColumn";
-            this.destinationDataGridViewTextBoxColumn.ReadOnly = true;
-            this.destinationDataGridViewTextBoxColumn.Width = 89;
-            // 
-            // ratingDataGridViewTextBoxColumn
-            // 
-            this.ratingDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.ratingDataGridViewTextBoxColumn.DataPropertyName = "Rating";
-            this.ratingDataGridViewTextBoxColumn.DefaultHeaderCellType = typeof(DataGridViewAutoFilter.DataGridViewAutoFilterColumnHeaderCell);
-            this.ratingDataGridViewTextBoxColumn.GrayStarColor = System.Drawing.Color.LightGray;
-            this.ratingDataGridViewTextBoxColumn.HeaderText = "Rating";
-            this.ratingDataGridViewTextBoxColumn.Name = "ratingDataGridViewTextBoxColumn";
-            this.ratingDataGridViewTextBoxColumn.RatedStarColor = System.Drawing.Color.Green;
-            this.ratingDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.ratingDataGridViewTextBoxColumn.StarScale = 1F;
-            this.ratingDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // distanceDataGridViewTextBoxColumn
-            // 
-            this.distanceDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.distanceDataGridViewTextBoxColumn.DataPropertyName = "Distance";
-            this.distanceDataGridViewTextBoxColumn.FilteringEnabled = false;
-            this.distanceDataGridViewTextBoxColumn.HeaderText = "Distance";
-            this.distanceDataGridViewTextBoxColumn.Name = "distanceDataGridViewTextBoxColumn";
-            this.distanceDataGridViewTextBoxColumn.ReadOnly = true;
-            this.distanceDataGridViewTextBoxColumn.Width = 88;
-            // 
-            // groupDataGridViewTextBoxColumn
-            // 
-            this.groupDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.groupDataGridViewTextBoxColumn.DataPropertyName = "Group";
-            this.groupDataGridViewTextBoxColumn.FilteringEnabled = false;
-            this.groupDataGridViewTextBoxColumn.HeaderText = "Group";
-            this.groupDataGridViewTextBoxColumn.Name = "groupDataGridViewTextBoxColumn";
-            this.groupDataGridViewTextBoxColumn.Width = 88;
-            // 
-            // origFileNameDataGridViewTextBoxColumn
-            // 
-            this.origFileNameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.origFileNameDataGridViewTextBoxColumn.DataPropertyName = "OrigFileName";
-            this.origFileNameDataGridViewTextBoxColumn.FilteringEnabled = false;
-            this.origFileNameDataGridViewTextBoxColumn.HeaderText = "Original File";
-            this.origFileNameDataGridViewTextBoxColumn.Name = "origFileNameDataGridViewTextBoxColumn";
-            this.origFileNameDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // notesDataGridViewTextBoxColumn
-            // 
-            this.notesDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.notesDataGridViewTextBoxColumn.DataPropertyName = "Notes";
-            this.notesDataGridViewTextBoxColumn.FilteringEnabled = false;
-            this.notesDataGridViewTextBoxColumn.HeaderText = "Notes";
-            this.notesDataGridViewTextBoxColumn.MinimumWidth = 100;
-            this.notesDataGridViewTextBoxColumn.Name = "notesDataGridViewTextBoxColumn";
-            // 
-            // planDataGridViewTextBoxColumn
-            // 
-            this.planDataGridViewTextBoxColumn.DataPropertyName = "Plan";
-            this.planDataGridViewTextBoxColumn.HeaderText = "Plan";
-            this.planDataGridViewTextBoxColumn.Name = "planDataGridViewTextBoxColumn";
-            // 
-            // origFullFileNameDataGridViewTextBoxColumn
-            // 
-            this.origFullFileNameDataGridViewTextBoxColumn.DataPropertyName = "OrigFullFileName";
-            this.origFullFileNameDataGridViewTextBoxColumn.HeaderText = "OrigFullFileName";
-            this.origFullFileNameDataGridViewTextBoxColumn.Name = "origFullFileNameDataGridViewTextBoxColumn";
-            // 
-            // fileCreateDateDataTextBoxColumn
-            // 
-            this.fileCreateDateDataTextBoxColumn.DataPropertyName = "FileCreateDate";
-            this.fileCreateDateDataTextBoxColumn.FilteringEnabled = false;
-            this.fileCreateDateDataTextBoxColumn.HeaderText = "File Create Date";
-            this.fileCreateDateDataTextBoxColumn.Name = "fileCreateDateDataTextBoxColumn";
-            this.fileCreateDateDataTextBoxColumn.Width = 88;
-            // 
-            // DepartureNameTextBoxColumn
-            // 
-            this.DepartureNameTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.DepartureNameTextBoxColumn.DataPropertyName = "DepartureName";
-            this.DepartureNameTextBoxColumn.FilteringEnabled = false;
-            this.DepartureNameTextBoxColumn.HeaderText = "Departure Name";
-            this.DepartureNameTextBoxColumn.Name = "DepartureNameTextBoxColumn";
-            this.DepartureNameTextBoxColumn.Width = 110;
-            // 
-            // DestinationNameTextBoxColumn
-            // 
-            this.DestinationNameTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.DestinationNameTextBoxColumn.DataPropertyName = "DestinationName";
-            this.DestinationNameTextBoxColumn.FilteringEnabled = false;
-            this.DestinationNameTextBoxColumn.HeaderText = "Destination Name";
-            this.DestinationNameTextBoxColumn.Name = "DestinationNameTextBoxColumn";
-            this.DestinationNameTextBoxColumn.Width = 110;
-            // 
-            // AuthorDataGridViewTextBoxColumn
-            // 
-            this.AuthorDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.AuthorDataGridViewTextBoxColumn.DataPropertyName = "Author";
-            this.AuthorDataGridViewTextBoxColumn.FilteringEnabled = false;
-            this.AuthorDataGridViewTextBoxColumn.HeaderText = "Author";
-            this.AuthorDataGridViewTextBoxColumn.Name = "AuthorDataGridViewTextBoxColumn";
-            // 
-            // AirportCountDataGridViewTextBoxColumn
-            // 
-            this.AirportCountDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.AirportCountDataGridViewTextBoxColumn.DataPropertyName = "AirportCount";
-            this.AirportCountDataGridViewTextBoxColumn.FilteringEnabled = false;
-            this.AirportCountDataGridViewTextBoxColumn.HeaderText = "Airport Count";
-            this.AirportCountDataGridViewTextBoxColumn.Name = "AirportCountDataGridViewTextBoxColumn";
-            this.AirportCountDataGridViewTextBoxColumn.Width = 75;
-            // 
-            // WaypointCountDataGridViewTextBoxColumn
-            // 
-            this.WaypointCountDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.WaypointCountDataGridViewTextBoxColumn.DataPropertyName = "WaypointCount";
-            this.WaypointCountDataGridViewTextBoxColumn.FilteringEnabled = false;
-            this.WaypointCountDataGridViewTextBoxColumn.HeaderText = "Waypoint Count";
-            this.WaypointCountDataGridViewTextBoxColumn.Name = "WaypointCountDataGridViewTextBoxColumn";
-            this.WaypointCountDataGridViewTextBoxColumn.Width = 75;
             // 
             // dbPlanObjectBindingSource
             // 
@@ -543,6 +374,182 @@
             this.statusStrip2.TabIndex = 2;
             this.statusStrip2.Text = "statusStrip2";
             // 
+            // id
+            // 
+            this.id.DataPropertyName = "Id";
+            this.id.HeaderText = "Id";
+            this.id.Name = "id";
+            // 
+            // nameDataGridViewTextBoxColumn
+            // 
+            this.nameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
+            this.nameDataGridViewTextBoxColumn.FilteringEnabled = false;
+            this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
+            this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
+            this.nameDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // typeDataGridViewTextBoxColumn
+            // 
+            this.typeDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.typeDataGridViewTextBoxColumn.DataPropertyName = "Type";
+            this.typeDataGridViewTextBoxColumn.FilteringEnabled = false;
+            this.typeDataGridViewTextBoxColumn.HeaderText = "Type";
+            this.typeDataGridViewTextBoxColumn.Name = "typeDataGridViewTextBoxColumn";
+            this.typeDataGridViewTextBoxColumn.ReadOnly = true;
+            this.typeDataGridViewTextBoxColumn.Width = 60;
+            // 
+            // importDateDataGridViewTextBoxColumn
+            // 
+            this.importDateDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.importDateDataGridViewTextBoxColumn.DataPropertyName = "ImportDate";
+            this.importDateDataGridViewTextBoxColumn.FilteringEnabled = false;
+            this.importDateDataGridViewTextBoxColumn.HeaderText = "Import Date";
+            this.importDateDataGridViewTextBoxColumn.Name = "importDateDataGridViewTextBoxColumn";
+            this.importDateDataGridViewTextBoxColumn.ReadOnly = true;
+            this.importDateDataGridViewTextBoxColumn.Width = 88;
+            // 
+            // departureDataGridViewTextBoxColumn
+            // 
+            this.departureDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.departureDataGridViewTextBoxColumn.DataPropertyName = "Departure";
+            this.departureDataGridViewTextBoxColumn.FilteringEnabled = false;
+            this.departureDataGridViewTextBoxColumn.HeaderText = "Departure";
+            this.departureDataGridViewTextBoxColumn.Name = "departureDataGridViewTextBoxColumn";
+            this.departureDataGridViewTextBoxColumn.ReadOnly = true;
+            this.departureDataGridViewTextBoxColumn.Width = 89;
+            // 
+            // destinationDataGridViewTextBoxColumn
+            // 
+            this.destinationDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.destinationDataGridViewTextBoxColumn.DataPropertyName = "Destination";
+            this.destinationDataGridViewTextBoxColumn.FilteringEnabled = false;
+            this.destinationDataGridViewTextBoxColumn.HeaderText = "Destination";
+            this.destinationDataGridViewTextBoxColumn.Name = "destinationDataGridViewTextBoxColumn";
+            this.destinationDataGridViewTextBoxColumn.ReadOnly = true;
+            this.destinationDataGridViewTextBoxColumn.Width = 89;
+            // 
+            // ratingDataGridViewTextBoxColumn
+            // 
+            this.ratingDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.ratingDataGridViewTextBoxColumn.DataPropertyName = "Rating";
+            this.ratingDataGridViewTextBoxColumn.DefaultHeaderCellType = typeof(DataGridViewAutoFilter.DataGridViewAutoFilterColumnHeaderCell);
+            this.ratingDataGridViewTextBoxColumn.GrayStarColor = System.Drawing.Color.LightGray;
+            this.ratingDataGridViewTextBoxColumn.HeaderText = "Rating";
+            this.ratingDataGridViewTextBoxColumn.Name = "ratingDataGridViewTextBoxColumn";
+            this.ratingDataGridViewTextBoxColumn.RatedStarColor = System.Drawing.Color.Green;
+            this.ratingDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.ratingDataGridViewTextBoxColumn.StarScale = 1F;
+            this.ratingDataGridViewTextBoxColumn.Width = 125;
+            // 
+            // distanceDataGridViewTextBoxColumn
+            // 
+            this.distanceDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.distanceDataGridViewTextBoxColumn.DataPropertyName = "Distance";
+            this.distanceDataGridViewTextBoxColumn.FilteringEnabled = false;
+            this.distanceDataGridViewTextBoxColumn.HeaderText = "Distance";
+            this.distanceDataGridViewTextBoxColumn.Name = "distanceDataGridViewTextBoxColumn";
+            this.distanceDataGridViewTextBoxColumn.ReadOnly = true;
+            this.distanceDataGridViewTextBoxColumn.Width = 88;
+            // 
+            // groupDataGridViewTextBoxColumn
+            // 
+            this.groupDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.groupDataGridViewTextBoxColumn.DataPropertyName = "Group";
+            this.groupDataGridViewTextBoxColumn.FilteringEnabled = false;
+            this.groupDataGridViewTextBoxColumn.HeaderText = "Group";
+            this.groupDataGridViewTextBoxColumn.Name = "groupDataGridViewTextBoxColumn";
+            this.groupDataGridViewTextBoxColumn.Width = 88;
+            // 
+            // origFileNameDataGridViewTextBoxColumn
+            // 
+            this.origFileNameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.origFileNameDataGridViewTextBoxColumn.DataPropertyName = "OrigFileName";
+            this.origFileNameDataGridViewTextBoxColumn.FilteringEnabled = false;
+            this.origFileNameDataGridViewTextBoxColumn.HeaderText = "Original File";
+            this.origFileNameDataGridViewTextBoxColumn.Name = "origFileNameDataGridViewTextBoxColumn";
+            this.origFileNameDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // notesDataGridViewTextBoxColumn
+            // 
+            this.notesDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.notesDataGridViewTextBoxColumn.DataPropertyName = "Notes";
+            this.notesDataGridViewTextBoxColumn.FilteringEnabled = false;
+            this.notesDataGridViewTextBoxColumn.HeaderText = "Notes";
+            this.notesDataGridViewTextBoxColumn.MinimumWidth = 100;
+            this.notesDataGridViewTextBoxColumn.Name = "notesDataGridViewTextBoxColumn";
+            // 
+            // planDataGridViewTextBoxColumn
+            // 
+            this.planDataGridViewTextBoxColumn.DataPropertyName = "Plan";
+            this.planDataGridViewTextBoxColumn.HeaderText = "Plan";
+            this.planDataGridViewTextBoxColumn.Name = "planDataGridViewTextBoxColumn";
+            this.planDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // origFullFileNameDataGridViewTextBoxColumn
+            // 
+            this.origFullFileNameDataGridViewTextBoxColumn.DataPropertyName = "OrigFullFileName";
+            this.origFullFileNameDataGridViewTextBoxColumn.HeaderText = "OrigFullFileName";
+            this.origFullFileNameDataGridViewTextBoxColumn.Name = "origFullFileNameDataGridViewTextBoxColumn";
+            this.origFullFileNameDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // fileCreateDateDataTextBoxColumn
+            // 
+            this.fileCreateDateDataTextBoxColumn.DataPropertyName = "FileCreateDate";
+            this.fileCreateDateDataTextBoxColumn.FilteringEnabled = false;
+            this.fileCreateDateDataTextBoxColumn.HeaderText = "File Create Date";
+            this.fileCreateDateDataTextBoxColumn.Name = "fileCreateDateDataTextBoxColumn";
+            this.fileCreateDateDataTextBoxColumn.ReadOnly = true;
+            this.fileCreateDateDataTextBoxColumn.Width = 88;
+            // 
+            // DepartureNameTextBoxColumn
+            // 
+            this.DepartureNameTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.DepartureNameTextBoxColumn.DataPropertyName = "DepartureName";
+            this.DepartureNameTextBoxColumn.FilteringEnabled = false;
+            this.DepartureNameTextBoxColumn.HeaderText = "Departure Name";
+            this.DepartureNameTextBoxColumn.Name = "DepartureNameTextBoxColumn";
+            this.DepartureNameTextBoxColumn.ReadOnly = true;
+            this.DepartureNameTextBoxColumn.Width = 110;
+            // 
+            // DestinationNameTextBoxColumn
+            // 
+            this.DestinationNameTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.DestinationNameTextBoxColumn.DataPropertyName = "DestinationName";
+            this.DestinationNameTextBoxColumn.FilteringEnabled = false;
+            this.DestinationNameTextBoxColumn.HeaderText = "Destination Name";
+            this.DestinationNameTextBoxColumn.Name = "DestinationNameTextBoxColumn";
+            this.DestinationNameTextBoxColumn.ReadOnly = true;
+            this.DestinationNameTextBoxColumn.Width = 110;
+            // 
+            // AuthorDataGridViewTextBoxColumn
+            // 
+            this.AuthorDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.AuthorDataGridViewTextBoxColumn.DataPropertyName = "Author";
+            this.AuthorDataGridViewTextBoxColumn.FilteringEnabled = false;
+            this.AuthorDataGridViewTextBoxColumn.HeaderText = "Author";
+            this.AuthorDataGridViewTextBoxColumn.Name = "AuthorDataGridViewTextBoxColumn";
+            // 
+            // AirportCountDataGridViewTextBoxColumn
+            // 
+            this.AirportCountDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.AirportCountDataGridViewTextBoxColumn.DataPropertyName = "AirportCount";
+            this.AirportCountDataGridViewTextBoxColumn.FilteringEnabled = false;
+            this.AirportCountDataGridViewTextBoxColumn.HeaderText = "Airport Count";
+            this.AirportCountDataGridViewTextBoxColumn.Name = "AirportCountDataGridViewTextBoxColumn";
+            this.AirportCountDataGridViewTextBoxColumn.ReadOnly = true;
+            this.AirportCountDataGridViewTextBoxColumn.Width = 75;
+            // 
+            // WaypointCountDataGridViewTextBoxColumn
+            // 
+            this.WaypointCountDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.WaypointCountDataGridViewTextBoxColumn.DataPropertyName = "WaypointCount";
+            this.WaypointCountDataGridViewTextBoxColumn.FilteringEnabled = false;
+            this.WaypointCountDataGridViewTextBoxColumn.HeaderText = "Waypoint Count";
+            this.WaypointCountDataGridViewTextBoxColumn.Name = "WaypointCountDataGridViewTextBoxColumn";
+            this.WaypointCountDataGridViewTextBoxColumn.ReadOnly = true;
+            this.WaypointCountDataGridViewTextBoxColumn.Width = 75;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -598,6 +605,7 @@
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem selectColumnsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
+        private System.Windows.Forms.StatusStrip statusStrip2;
         private System.Windows.Forms.DataGridViewTextBoxColumn id;
         private DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn nameDataGridViewTextBoxColumn;
         private DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn typeDataGridViewTextBoxColumn;
@@ -617,6 +625,5 @@
         private DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn AuthorDataGridViewTextBoxColumn;
         private DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn AirportCountDataGridViewTextBoxColumn;
         private DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn WaypointCountDataGridViewTextBoxColumn;
-        private System.Windows.Forms.StatusStrip statusStrip2;
     }
 }
