@@ -1,6 +1,8 @@
 ﻿using FlightPlanManager.DataObjects;
 using System;
+using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Windows.Forms;
 
 namespace FlightPlanManager.Services
 {
@@ -69,9 +71,39 @@ namespace FlightPlanManager.Services
             return result;
         }
 
-        public static SortableBindingList<DbPlanObject> GetData()
+        public static List<string> GetDistinct(string col)
         {
-            var result = new SortableBindingList<DbPlanObject>();
+            var result = new List<string>();
+            using (var connection = new SQLiteConnection($"Data Source={DbCommon.DbName}"))
+            {
+                connection.Open();
+
+                using (SQLiteCommand cmd = connection.CreateCommand())
+                {
+                    cmd.Parameters.AddWithValue("@col", col);
+
+                    cmd.CommandText = $"SELECT DISTINCT [{col}] FROM planData";
+                    using (var rdr = cmd.ExecuteReader())
+                    {
+                        while (rdr.Read())
+                        {
+                            try
+                            {
+                                result.Add(rdr.GetString(0));
+                            }
+                            catch { }
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+
+        public static List<DbPlanObject> GetData()
+        {
+            var result = new List<DbPlanObject>();
             using (var connection = new SQLiteConnection($"Data Source={DbCommon.DbName}"))
             {
                 connection.Open();
@@ -177,6 +209,8 @@ namespace FlightPlanManager.Services
                     cmd.Parameters.AddWithValue("@fileCreateDate", plan.FileCreateDate);
                     cmd.Parameters.AddWithValue("@departureName", plan.DepartureName);
                     cmd.Parameters.AddWithValue("@destinationName", plan.DestinationName);
+                    cmd.Parameters.AddWithValue("@airportCnt", plan.AirportCount);
+                    cmd.Parameters.AddWithValue("@waypointCnt", plan.WaypointCount);
 
                     cmd.CommandText = "SELECT planName FROM planData WHERE planName = @name AND filename = @filename";
                     using (var rdr = cmd.ExecuteReader())
@@ -202,7 +236,9 @@ namespace FlightPlanManager.Services
                                        importDate,
                                        fileCreateDate,
                                        destinationName,
-                                       departureName
+                                       departureName,
+                                       airportCnt,
+                                       wayPointCnt
                                         )
                                      VALUES (
                                         @name,
@@ -219,7 +255,9 @@ namespace FlightPlanManager.Services
                                         @importDate,
                                         @fileCreateDate,
                                         @departureName,
-                                        @destinationName
+                                        @destinationName,
+                                        @airportCnt,
+                                        @waypointCnt
                                     )";
                     cmd.ExecuteNonQuery();
                     cmd.CommandText = "SELECT last_insert_rowid()";
@@ -254,7 +292,6 @@ namespace FlightPlanManager.Services
                     cmd.Parameters.AddWithValue("@fileCreateDate", plan.FileCreateDate);
                     cmd.Parameters.AddWithValue("@departureName", plan.DepartureName);
                     cmd.Parameters.AddWithValue("@destinationName", plan.DestinationName);
-                    cmd.Parameters.AddWithValue("@author", plan.Author);
                     cmd.Parameters.AddWithValue("@airportCount", plan.AirportCount);
                     cmd.Parameters.AddWithValue("@waypointCount", plan.WaypointCount);
 
@@ -271,7 +308,6 @@ namespace FlightPlanManager.Services
                                            fileCreateDate = @fileCreateDate,
                                            departureName = @departureName,
                                            destinationName = @destinationName,
-                                           author = @author,
                                            airportCnt = @airportCount,
                                            waypointCnt = @waypointCount
                                         WHERE planName = @name AND filename = @filename";

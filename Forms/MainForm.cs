@@ -1,6 +1,8 @@
-﻿using FlightPlanManager.DataObjects;
+﻿using DataGridViewAutoFilter;
+using FlightPlanManager.DataObjects;
 using FlightPlanManager.Models;
 using FlightPlanManager.Services;
+using MoreLinq;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -17,7 +19,7 @@ namespace FlightPlanManager.Forms
 {
     public partial class MainForm : Form
     {
-        private SortableBindingList<DbPlanObject> sortableData = new SortableBindingList<DbPlanObject>();
+        private List<DbPlanObject> sortableData = new List<DbPlanObject>();
         private readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         public MainForm()
@@ -27,6 +29,7 @@ namespace FlightPlanManager.Forms
             InitializeComponent();
             this.Load += this.MainForm_Load;
             this.dataGridView1.ContextMenuStrip = this.contextMenuStrip1;
+            this.dataGridView1.CellValueChanged += this.DataGridView1_CellValueChanged;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -35,18 +38,23 @@ namespace FlightPlanManager.Forms
 
             sortableData = DbData.GetData();
 
-            dataGridView1.DataSource = sortableData;
+            var bs = new BindingSource
+            {
+                DataSource = sortableData.ToDataTable()
+            };
+            dataGridView1.DataSource = bs;
+
             dataGridView1.Columns["id"].Visible = false;
-            dataGridView1.Columns["planDataGridViewTextBoxColumn"].Visible = false;
-            dataGridView1.Columns["origFullFileNameDataGridViewTextBoxColumn"].Visible = false;
+            planDataGridViewTextBoxColumn.Visible = false;
+            origFileNameDataGridViewTextBoxColumn.Visible = false;
 
-            dataGridView1.Columns["groupDataGridViewTextBoxColumn"].HeaderCell.Style.Font = new Font(dataGridView1.Font, FontStyle.Bold | FontStyle.Underline);
-            dataGridView1.Columns["notesDataGridViewTextBoxColumn"].HeaderCell.Style.Font = new Font(dataGridView1.Font, FontStyle.Bold | FontStyle.Underline);
-            dataGridView1.Columns["ratingDataGridViewTextBoxColumn"].HeaderCell.Style.Font = new Font(dataGridView1.Font, FontStyle.Bold | FontStyle.Underline);
-            dataGridView1.Columns["AuthorDataGridViewTextBoxColumn"].HeaderCell.Style.Font = new Font(dataGridView1.Font, FontStyle.Bold | FontStyle.Underline);
+            groupDataGridViewTextBoxColumn.HeaderCell.Style.Font = new Font(dataGridView1.Font, FontStyle.Bold | FontStyle.Underline);
+            notesDataGridViewTextBoxColumn.HeaderCell.Style.Font = new Font(dataGridView1.Font, FontStyle.Bold | FontStyle.Underline);
+            ratingDataGridViewTextBoxColumn.HeaderCell.Style.Font = new Font(dataGridView1.Font, FontStyle.Bold | FontStyle.Underline);
+            AuthorDataGridViewTextBoxColumn.HeaderCell.Style.Font = new Font(dataGridView1.Font, FontStyle.Bold | FontStyle.Underline);
 
-            dataGridView1.Columns["importDateDataGridViewTextBoxColumn"].DefaultCellStyle.Format = "yyyy-MM-dd";
-            dataGridView1.Columns["fileCreateDateDataTextBoxColumn"].DefaultCellStyle.Format = "yyyy-MM-dd";
+            importDateDataGridViewTextBoxColumn.DefaultCellStyle.Format = "yyyy-MM-dd";
+            fileCreateDateDataTextBoxColumn.DefaultCellStyle.Format = "yyyy-MM-dd";
 
             dataGridView1.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Top;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
@@ -58,9 +66,54 @@ namespace FlightPlanManager.Forms
             dataGridView1.Columns.OfType<DataGridViewColumn>().ToList().ForEach(col => col.Selected = false);
 
             SetupColumns();
+            EnableGridFilter(true);
+
             this.FormClosing += AppClosing;
 
             RestoreWindowPosition();
+        }
+
+        private void DataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            var i = e.RowIndex;
+            var sData = sortableData.Find(s => s.Id.Equals((int)dataGridView1.Rows[i].Cells["id"].Value));
+
+            if (dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.Equals(DBNull.Value))
+                dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = string.Empty;
+
+            switch (dataGridView1.Columns[e.ColumnIndex].HeaderText)
+            {
+                case "Author": sData.Author = (string)dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value ?? String.Empty; break;
+                case "Group": sData.Group = (string)dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value ?? String.Empty; break;
+                case "Notes": sData.Notes = (string)dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value ?? String.Empty; break;
+                case "Rating": sData.Rating = (int)dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value; break;
+            }
+
+            DbData.Update(sData);
+        }
+
+        private void EnableGridFilter(bool value)
+        {
+            nameDataGridViewTextBoxColumn.FilteringEnabled = value;
+            typeDataGridViewTextBoxColumn.FilteringEnabled = value;
+            importDateDataGridViewTextBoxColumn.FilteringEnabled = value;
+            departureDataGridViewTextBoxColumn.FilteringEnabled = value;
+            destinationDataGridViewTextBoxColumn.FilteringEnabled = value;
+            ratingDataGridViewTextBoxColumn = new FlightPlanManager.Controls.DataGridViewRatingColumn();
+            distanceDataGridViewTextBoxColumn.FilteringEnabled = value;
+            groupDataGridViewTextBoxColumn.FilteringEnabled = value;
+            origFileNameDataGridViewTextBoxColumn.FilteringEnabled = value;
+            notesDataGridViewTextBoxColumn.FilteringEnabled = value;
+            //planDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            //origFullFileNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            fileCreateDateDataTextBoxColumn.FilteringEnabled = value;
+            DepartureNameTextBoxColumn.FilteringEnabled = value;
+            DestinationNameTextBoxColumn.FilteringEnabled = value;
+            AuthorDataGridViewTextBoxColumn.FilteringEnabled = value;
+            AirportCountDataGridViewTextBoxColumn.FilteringEnabled = value;
+            WaypointCountDataGridViewTextBoxColumn.FilteringEnabled = value;
+
+            WaypointCountDataGridViewTextBoxColumn.FilteringEnabled = value;
         }
 
         private void RestoreWindowPosition()
@@ -84,6 +137,22 @@ namespace FlightPlanManager.Forms
                 rect.Left, rect.Top, rect.Width, rect.Height));
         }
 
+        private void DataGridView_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            string filterStatus = DataGridViewAutoFilterColumnHeaderCell.GetFilterStatus(dataGridView1);
+            if (string.IsNullOrEmpty(filterStatus))
+            {
+                ShowAllLabel.Visible = false;
+                FilterStatusLabel.Visible = false;
+            }
+            else
+            {
+                ShowAllLabel.Visible = true;
+                FilterStatusLabel.Visible = true;
+                FilterStatusLabel.Text = filterStatus;
+            }
+        }
+
         private void DataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
             try
@@ -99,7 +168,7 @@ namespace FlightPlanManager.Forms
                         autoText.AutoCompleteMode = AutoCompleteMode.Suggest;
                         autoText.AutoCompleteSource = AutoCompleteSource.CustomSource;
                         AutoCompleteStringCollection DataCollection = new AutoCompleteStringCollection();
-                        AddItemsToGroupAutoCompleteList(DataCollection, data);
+                        AddItemsTopAutoCompleteList(DataCollection, DbData.GetDistinct("groupFlownWith"));
                         autoText.AutoCompleteCustomSource = DataCollection;
                     }
                 }
@@ -110,7 +179,7 @@ namespace FlightPlanManager.Forms
                         autoText.AutoCompleteMode = AutoCompleteMode.Suggest;
                         autoText.AutoCompleteSource = AutoCompleteSource.CustomSource;
                         AutoCompleteStringCollection DataCollection = new AutoCompleteStringCollection();
-                        AddItemsToAuthorAutoCompleteList(DataCollection, data);
+                        AddItemsTopAutoCompleteList(DataCollection, DbData.GetDistinct("author"));
                         autoText.AutoCompleteCustomSource = DataCollection;
                     }
                 }
@@ -118,6 +187,15 @@ namespace FlightPlanManager.Forms
             catch (Exception ex)
             {
                 Logger.Error(ex, "Auto Complete");
+            }
+        }
+
+        public void AddItemsTopAutoCompleteList(AutoCompleteStringCollection col, List<string> data)
+        {
+            foreach (var s in data)
+            {
+                if (!string.IsNullOrEmpty(s) && !col.Contains(s))
+                    col.Add(s);
             }
         }
 
@@ -235,18 +313,36 @@ namespace FlightPlanManager.Forms
                     if (openFileDialog.FileNames.Length > 1)
                     {
                         ShowResults(overwrite, imported, duplicates);
-                        UpdateGrid();
+                        // UpdateGrid();
                     }
+
+                    UpdateGrid();
                 }
             }
+        }
+
+        private void ShowAllLabel_Click(object sender, EventArgs e)
+        {
+            DataGridViewAutoFilterTextBoxColumn.RemoveFilter(dataGridView1);
+            DataGridViewAutoFilterStarRatingColumn.RemoveFilter(dataGridView1);
         }
 
         private void UpdateGrid()
         {
             sortableData = DbData.GetData();
-            dataGridView1.DataSource = sortableData;
+            var bs = new BindingSource
+            {
+                DataSource = sortableData.ToDataTable()
+            };
+            dataGridView1.DataSource = bs;
+
             dataGridView1.Refresh();
             dataGridView1.Update();
+
+            //sortableData = DbData.GetData();
+            //dataGridView1.DataSource = sortableData;
+            //dataGridView1.Refresh();
+            //dataGridView1.Update();
         }
 
         private void ShowResults(bool overwrite, List<string> imported, List<string> duplicates)
@@ -299,10 +395,10 @@ namespace FlightPlanManager.Forms
                 OrigFileName = fileInfo.Name,
                 OrigFullFileName = planFile,
                 Rating = 0,
-                ImportDate = DateTime.Now,
+                ImportDate = DateTime.Now.Date,
                 Plan = doc.InnerXml,
                 Type = data.FlightPlan_FlightPlan.FPType ?? "VFR",
-                FileCreateDate = fileInfo.CreationTime,
+                FileCreateDate = fileInfo.CreationTime.Date,
                 DepartureName = data.FlightPlan_FlightPlan.DepartureName ?? String.Empty,
                 DestinationName = data.FlightPlan_FlightPlan.DestinationName ?? String.Empty,
                 AirportCount = airports,

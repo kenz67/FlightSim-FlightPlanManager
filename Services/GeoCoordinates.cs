@@ -36,9 +36,9 @@ namespace FlightPlanManager.Services
             {
                 var (direction, value) = GetDirection(data);
                 var parts = value.Split(new char[0], StringSplitOptions.RemoveEmptyEntries);
-                var degrees = double.Parse(Regex.Match(parts[step++], @"\d+").Value, new CultureInfo("us-US"));
-                var minutes = double.Parse(Regex.Match(parts[step++], @"\d+").Value, new CultureInfo("us-US"));
-                var seconds = double.Parse(Regex.Match(parts[step++].Replace(',', '.'), @"[0-9\.]+").Value, new CultureInfo("us-US"));
+                var degrees = double.Parse(Regex.Match(parts[step++], @"\d+").Value, new CultureInfo("en-US"));
+                var minutes = double.Parse(Regex.Match(parts[step++], @"\d+").Value, new CultureInfo("en-US"));
+                var seconds = double.Parse(Regex.Match(parts[step++].Replace(',', '.'), @"[0-9\.]+").Value, new CultureInfo("en-US"));
 
                 return (degrees + (minutes / 60) + (seconds / 3600)) * (direction.Equals("N") || direction.Equals("E") ? 1 : -1);
             }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataGridViewAutoFilter;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -7,6 +8,7 @@ using System.Windows.Forms;
 
 namespace FlightPlanManager.Controls
 {
+    // public class DataGridViewRatingColumn : DataGridViewAutoFilterStarRatingColumn
     public class DataGridViewRatingColumn : DataGridViewColumn
     {
         public DataGridViewRatingColumn() : base(new DataGridViewRatingCell())
@@ -221,11 +223,14 @@ namespace FlightPlanManager.Controls
             float starScale = col == null ? 1 :
                 UseColumnStarScale ? col.StarScale : StarScale;
             UpdateBrushes(starScale);
-            for (int i = startIndex; i < startIndex + count; i++)
+            if (startIndex >= 0)
             {
-                AdjustBrushColors(brushes[i], rated ? ratedColor : grayColor, rated ? Color.White : grayColor);
-                g.FillPath(brushes[i], stars[i]);
-                //g.DrawPath(Pens.Green, stars[i]);
+                for (int i = startIndex; i < startIndex + count; i++)
+                {
+                    AdjustBrushColors(brushes[i], rated ? ratedColor : grayColor, rated ? Color.White : grayColor);
+                    g.FillPath(brushes[i], stars[i]);
+                    //g.DrawPath(Pens.Green, stars[i]);
+                }
             }
             g.Restore(gs);
         }
